@@ -1,9 +1,41 @@
 #!/usr/bin/env   node 
 
+var path = require('path');
+
+var env = process.env.NODE_ENV || 'dev';
+
+console.warn("running code in NODE_ENV ", env);
+
+/*
+function resolvePath (string) {
+  if (string.substr(0,1) === '~')
+    string = process.env.HOME + string.substr(1)
+  return path.resolve(string)
+}
+*/
+
+/*
+function resolvePath (string) {
+  if (string.substr(0,1) === '~') {
+    homedir = (process.platform.substr(0, 3) === 'win') ? process.env.HOMEPATH : process.env.HOME;
+    string = homedir + string.substr(1)
+  }
+  return path.resolve(string)
+}
+*/
+
+function resolvePath(str) {
+  if (str.substr(0, 2) === '~/') {
+    str = (process.env.HOME || process.env.HOMEPATH || process.env.HOMEDIR || process.cwd()) + str.substr(1);
+  }
+  return path.resolve(str);
+}
 
 // var shared_utils = require("shared-utils");
 // var shared_utils = require("/home/stens/Dropbox/Documents/code/github/shared-utils/src/node_utils.js");
-var shared_utils = require("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js");
+// var shared_utils = require("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js");
+var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
+
 // var shared_utils = require("/home/scott/Dropbox/Documents/code/github/shared-utils/src/node_utils.js");
 // var shared_utils = shared_utils_obj.shared_utils();
 // var shared_utils = shared_utils_obj.node_utils();
@@ -14,7 +46,8 @@ console.log("here is shared_utils ", shared_utils);
 
 // var genome_module = require('node-genome');
 // var genome_module = require('../src/genome');
-var genome_module = require("~/Dropbox/Documents/code/github/node-genome/src/genome");
+// var genome_module = require("~/Dropbox/Documents/code/github/node-genome/src/genome");
+var genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
 
 
 
@@ -157,7 +190,7 @@ for (var index = 0; index < max_index; index++) {
 
 
 
-process.exit(9);
+// process.exit(9);
 
 
 // ------------------------------------------------------------- //
@@ -211,9 +244,9 @@ genome.pop_genome( {
 
 
 
-console.log("--------  show_genetic_storehouse  ---------");
+// console.log("--------  show_genetic_storehouse  ---------");
 
-genome.show_genetic_storehouse();
+// genome.show_genetic_storehouse();
 
 
 console.log("--------  parse_genome_synth_sound  ---------");
@@ -232,19 +265,34 @@ genome.show_genome_buffer();
 
 console.log("-----------------");
 
-var audio_obj = {};
+var audio_genome_synth_obj = {};
 
-audio_obj.buffer = genome.get_genome_buffer();
+audio_genome_synth_obj.buffer = genome.get_genome_buffer();
 
-console.log("genome_buffer length ", audio_obj.buffer.length);
+console.log("genome_buffer length ", audio_genome_synth_obj.buffer.length);
 
 var wav_output_filename = "/tmp/genome_synth_audio.wav";
 
 
 // node_utils.write_buffer_to_file(audio_obj, wav_output_filename);
-shared_utils.write_buffer_to_file(audio_obj, wav_output_filename);
+shared_utils.write_buffer_to_file(audio_genome_synth_obj, wav_output_filename);
 
 console.log("wav_output_filename   ", wav_output_filename);
+
+// --- do buffer diff
+
+var diff_spec = { 
+					extent : "entire",	// diff which portions of buffers
+					master : "left",	// determines which buffer determines buffer length
+				};
+
+shared_utils.diff_buffers(source_obj, audio_genome_synth_obj, diff_spec);
+// shared_utils.diff_buffers(source_obj, source_obj, diff_spec);
+// shared_utils.diff_buffers(source_obj, audio_genome_synth_obj);
+
+
+console.log("diff_spec   ", diff_spec);
+
 
 
 console.log("<><><>  <><><>  <><><>   end of processing   <><><>  <><><>  <><><>");
