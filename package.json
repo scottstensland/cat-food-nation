@@ -1,8 +1,8 @@
 {
   "name": "cat-food-nation",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "cat-food-nation ===============",
-  "main": "index.js",
+  "main": "src/cat_food_nation.js",
   "directories": {
     "test": "test"
   },
@@ -25,7 +25,16 @@
     "visualization"
   ],
   "author": "Scott Stensland <scottstensland@gmail.com> (http://catfoodnation.com/)",
-  "license": "ISC",
+  // "license": "ISC",
+
+  "licenses": [
+    {
+      "type": "WTFPL – Do What the Fuck You Want to Public License",
+      "url": "http://www.wtfpl.net"
+    }
+  ],
+
+
   "bugs": {
     "url": "https://github.com/scottstensland/cat-food-nation/issues"
   },
