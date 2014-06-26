@@ -1,0 +1,33 @@
+{
+  "name": "cat-food-nation",
+  "version": "0.0.0",
+  "description": "cat-food-nation ===============",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scottstensland/cat-food-nation.git"
+  },
+  "keywords": [
+    "music",
+    "sound",
+    "audio",
+    "synthesis",
+    "genetics",
+    "evolution",
+    "machine_learning",
+    "webgl",
+    "visualization"
+  ],
+  "author": "Scott Stensland <scottstensland@gmail.com> (http://catfoodnation.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scottstensland/cat-food-nation/issues"
+  },
+  "homepage": "https://github.com/scottstensland/cat-food-nation"
+}
