@@ -107,7 +107,7 @@ var seed_genome = {
 };
 
 
-	genome.pop_genome( seed_genome );
+	genome.pop_genome(seed_genome);
 
 
 	console.log("--------  show_genetic_storehouse  ---------");
