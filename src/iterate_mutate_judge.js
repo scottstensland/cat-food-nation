@@ -58,16 +58,27 @@ process.exit(9);
 
 // ------------  synthesize an audio buffer  ------------  //
 
+/*
+2^8 256
+2^9 512
+2^10 1024
+2^11 2048
+2^12 4096
+2^13 8192
+2^14 16384
+*/
 
-SIZE_BUFFER_SOURCE = 5;
+// SIZE_BUFFER_SOURCE = 5;
 // SIZE_BUFFER_SOURCE = 256;
+SIZE_BUFFER_SOURCE = 4096;
 // SIZE_BUFFER_SOURCE = 16384;
 
 
 
-var samples_per_cycle = 5;
+// var samples_per_cycle = 5;
 // var samples_per_cycle = 64;
 // var samples_per_cycle = 256;
+var samples_per_cycle = SIZE_BUFFER_SOURCE;
 
 var source_obj = {};
 
@@ -148,7 +159,7 @@ var seed_genome = {
 
 	genome.parse_genome_synth_sound();
 
-	genome.show_genome_buffer();
+	// genome.show_genome_buffer();
 
 	// ---
 
@@ -174,35 +185,36 @@ var seed_genome = {
 					};
 
 	shared_utils.diff_buffers(source_obj, audio_genome_synth_obj, diff_spec);
-	console.log("___________ PRE evolve diff_spec   ", diff_spec);
+	console.log("___________ PRE evolve diff_spec   ", diff_spec,
+				"\n___________ PRE evolve diff_spec");
 
 	// --- now iterate across cycles of mutation + judge until satisfactory goodness is reached
 
 
-	var max_acceptible_diff_per_point = 0.1;
-	var max_attempts_per_point = 10;
+	var max_acceptible_diff_per_point = 0.00001;
+	var max_attempts_per_point = 30000;
 
 	var curr_gene_to_evolve = 0;
 
-	// var size_buffer_this_gene = genome.get_size_buffer_this_gene(curr_gene_to_evolve);
-	var size_buffer_this_gene = 2;
+	var size_buffer_this_gene = genome.get_size_buffer_this_gene(curr_gene_to_evolve);
+	// var size_buffer_this_gene = 2;
 
-	var curr_buffer_index_to_mutate = 1;
+	// var curr_buffer_index_to_mutate = 1;
 
-	// for (curr_buffer_index_to_mutate = 0; 
-	// 		 curr_buffer_index_to_mutate < size_buffer_this_gene;
-	// 		 curr_buffer_index_to_mutate++) {
+	for (var curr_buffer_index_to_mutate = 0; 
+			 curr_buffer_index_to_mutate < size_buffer_this_gene;
+			 curr_buffer_index_to_mutate++) {
 
-		console.log(curr_buffer_index_to_mutate, " curr_buffer_index_to_mutate _____________");
+		// console.log(curr_buffer_index_to_mutate, " curr_buffer_index_to_mutate _____________");
 
 		var curr_value_buffer_prior = genome.get_value_node_buffer(curr_gene_to_evolve,
 																		 curr_buffer_index_to_mutate);
 
-		console.log("curr_value_buffer_prior   ", curr_value_buffer_prior);
+		// console.log("PPRREEEE curr_value_buffer_prior   ", curr_value_buffer_prior);
 
 		var curr_value_buffer_source = source_obj.buffer[curr_buffer_index_to_mutate];
 
-		console.log("curr_value_buffer_source   ", curr_value_buffer_source);
+		// console.log("curr_value_buffer_source   ", curr_value_buffer_source);
 
 		// ---
 
@@ -212,7 +224,7 @@ var seed_genome = {
 		var curr_best_new_value = curr_value_buffer_prior;
 		var curr_diff = Math.abs(putative_new_value_float - curr_value_buffer_source);
 
-		console.log(curr_buffer_index_to_mutate, " PRE evolve curr_diff ", curr_diff);
+		// console.log(curr_buffer_index_to_mutate, " PRE evolve curr_diff ", curr_diff);
 
 		while (curr_diff > max_acceptible_diff_per_point &&
 			curr_attempt < max_attempts_per_point) {
@@ -227,42 +239,29 @@ var seed_genome = {
 				curr_best_new_value = putative_new_value_float;
 			};
 
-			console.log(curr_attempt, min_diff_witnessed_so_var, 
-						" putative_new_value_float   ", putative_new_value_float);
+			// console.log(curr_attempt, min_diff_witnessed_so_var, 
+			// 			" putative_new_value_float   ", putative_new_value_float);
 
 			curr_attempt++;
 		};
 
-		console.log(curr_buffer_index_to_mutate, " attempts ", curr_attempt,
-					" MMMMMMM   min_diff_witnessed_so_var ", 
-					  min_diff_witnessed_so_var);
+		// console.log(curr_buffer_index_to_mutate, " attempts ", curr_attempt,
+		// 			" min_diff ", 
+		// 			  min_diff_witnessed_so_var,
+		// 			  " best new ", curr_best_new_value);
 
-
-
-		// console.log(curr_buffer_index_to_mutate, " curr_value_buffer_source   ", curr_value_buffer_source);
-		// console.log(curr_buffer_index_to_mutate, " SSSSSSS curr_best_new_value   ", curr_best_new_value);
-
-		// --- update gene buffer with this new value ---  //
-
-/*
-		console.log(curr_buffer_index_to_mutate, "KLKLKLKLKLKL PRE get_value_node_buffer ",
-					genome.get_value_node_buffer(curr_gene_to_evolve, curr_buffer_index_to_mutate))
-
-		var curr_best_new_value = 0.9182736450;
-
-		console.log("EEEE arly ", curr_best_new_value);
-
-
-		audio_genome_synth_obj.buffer[curr_buffer_index_to_mutate] = curr_best_new_value;
+		// console.log(curr_buffer_index_to_mutate, "KLKLKLKLKLKL PRE get_value_node_buffer ",
+		// 				genome.get_value_node_buffer(curr_gene_to_evolve, curr_buffer_index_to_mutate))
 
 		genome.set_value_node_buffer(curr_gene_to_evolve, curr_buffer_index_to_mutate, curr_best_new_value);
-
-		console.log(curr_buffer_index_to_mutate, " POST get_value_node_buffer ",
-					genome.get_value_node_buffer(curr_gene_to_evolve, curr_buffer_index_to_mutate))
-*/
-	// };
+	};
 
 	// ---
+
+	genome.parse_genome_synth_sound();
+
+	audio_genome_synth_obj.buffer = genome.get_genome_buffer();
+
 
 	diff_spec = { 
 						extent : "entire",	// diff which portions of buffers
@@ -270,7 +269,8 @@ var seed_genome = {
 					};
 
 	shared_utils.diff_buffers(source_obj, audio_genome_synth_obj, diff_spec);
-	console.log("___________ POST evolve diff_spec   ", diff_spec);
+	console.log("___________ POST evolve diff_spec   ", diff_spec,
+				"\n___________ POST evolve diff_spec ");
 
 	// ---
 /*
