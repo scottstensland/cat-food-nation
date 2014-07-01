@@ -16,10 +16,37 @@ function do_typed_array_calc(given_obj) {
 	console.log("%O", given_obj);
 
 	given_obj.buffer = new Float32Array(given_obj.desired_size); // integer division by 2
+};
+
+// -------------
 
 
+var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
 
-}
+
+function cb_after_reading_input_file_grow_curve(input_obj, property_buffer_raw_input_file, property_buffer_input_file) {
+
+    console.log("TOP TOP TOP cb_after_reading_input_file_grow_curve");
+
+    // sync NOT async ... output into buffer_input_file
+    shared_utils.parse_wav(input_obj, property_buffer_raw_input_file, property_buffer_input_file);
+
+    delete input_obj[property_buffer_raw_input_file];    // no longer need raw pre parse buffer
+
+    console.log("buffer size ", input_obj[property_buffer_input_file].length);
+    console.log("buffer size ", input_obj[property_buffer_input_file].length);
+    console.log("buffer size ", input_obj[property_buffer_input_file].length);
+
+
+	// var show_object = function (given_obj, given_label, given_mode, limit_size_buffer)
+
+    shared_utils.show_object(input_obj, "input_obj", "total", 0);
+
+    // var buff_size_from_file = input_obj[property_buffer_input_file].length;
+    // var size_buffer = 256;
+};
+
+
 
 // ---------------------------------------------------------------- //
 
@@ -27,7 +54,7 @@ var evolveit = function() {
 
 	console.log("IN evolveit");
 
-	var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
+	// var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
 
 	console.log("here is shared_utils ", shared_utils);
 
@@ -92,6 +119,13 @@ for (var index = 0; index < max_index; index++) {
     console.log(index, " pop_audio_buffer ", source_obj.buffer[index]);
 }
 
+// --- save into WAV file --- //
+
+var source_wave_filename = "/tmp/source_wave.wav";
+
+shared_utils.write_buffer_to_file(source_obj, source_wave_filename);
+
+console.log("source_wave_filename   ", source_wave_filename);
 
 
 
@@ -169,13 +203,13 @@ var seed_genome = {
 
 	console.log("genome_buffer length ", audio_genome_synth_obj.buffer.length);
 
-	var wav_output_filename = "/tmp/genome_synth_audio.wav";
+	var genome_synth_raw_filename = "/tmp/genome_synth_raw.wav";
 
 
 	// node_utils.write_buffer_to_file(audio_obj, wav_output_filename);
-	shared_utils.write_buffer_to_file(audio_genome_synth_obj, wav_output_filename);
+	shared_utils.write_buffer_to_file(audio_genome_synth_obj, genome_synth_raw_filename);
 
-	console.log("wav_output_filename   ", wav_output_filename);
+	console.log("genome_synth_raw_filename   ", genome_synth_raw_filename);
 
 	// --- do buffer diff
 
@@ -191,8 +225,13 @@ var seed_genome = {
 	// --- now iterate across cycles of mutation + judge until satisfactory goodness is reached
 
 
-	var max_acceptible_diff_per_point = 0.00001;
-	var max_attempts_per_point = 30000;
+	// var max_acceptible_diff_per_point = 0.00001;
+	// var max_attempts_per_point = 30000;
+
+
+	var max_acceptible_diff_per_point = 0.01;
+	var max_attempts_per_point = 300;
+
 
 	var curr_gene_to_evolve = 0;
 
@@ -271,6 +310,43 @@ var seed_genome = {
 	shared_utils.diff_buffers(source_obj, audio_genome_synth_obj, diff_spec);
 	console.log("___________ POST evolve diff_spec   ", diff_spec,
 				"\n___________ POST evolve diff_spec ");
+
+
+
+// --- save into WAV file --- //
+
+var genome_synth_evolved_filename = "/tmp/genome_synth_evolved.wav";
+
+shared_utils.write_buffer_to_file(audio_genome_synth_obj, genome_synth_evolved_filename);
+
+console.log("genome_synth_evolved_filename   ", genome_synth_evolved_filename);
+
+
+// ------------ read wav file -------------------- //
+
+
+var wav_file_input_obj = {};  // create stub object to which we attach .buffer
+
+
+var property_buffer_raw_input_file = "buffer_raw_input_file";
+var property_buffer_input_file     = "buffer_input_file";
+
+// shared_utils.copy_properties_across_objects(audio_file_obj, wav_file_input_obj);
+
+// wav_file_input_obj.filename = "Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+// wav_file_input_obj.filename = "../data/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+wav_file_input_obj.filename = genome_synth_evolved_filename;
+
+
+wav_file_input_obj[property_buffer_raw_input_file] = new Buffer(0);
+
+
+shared_utils.read_file_into_buffer(wav_file_input_obj, property_buffer_raw_input_file,
+                                property_buffer_input_file,
+                                cb_after_reading_input_file_grow_curve);
+
+
+
 
 	// ---
 /*
