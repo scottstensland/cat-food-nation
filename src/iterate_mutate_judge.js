@@ -40,7 +40,7 @@ function cb_after_reading_input_file_grow_curve(input_obj, property_buffer_raw_i
 
 	// var show_object = function (given_obj, given_label, given_mode, limit_size_buffer)
 
-    shared_utils.show_object(input_obj, "input_obj", "total", 0);
+    shared_utils.show_object(input_obj, "input_obj", "total", 10);
 
     // var buff_size_from_file = input_obj[property_buffer_input_file].length;
     // var size_buffer = 256;
@@ -97,15 +97,27 @@ process.exit(9);
 
 // SIZE_BUFFER_SOURCE = 5;
 // SIZE_BUFFER_SOURCE = 256;
-SIZE_BUFFER_SOURCE = 4096;
-// SIZE_BUFFER_SOURCE = 16384;
+// SIZE_BUFFER_SOURCE = 4096;
+SIZE_BUFFER_SOURCE = 16384;
 
 
 
 // var samples_per_cycle = 5;
-// var samples_per_cycle = 64;
+var samples_per_cycle = 64;
 // var samples_per_cycle = 256;
-var samples_per_cycle = SIZE_BUFFER_SOURCE;
+// var samples_per_cycle = SIZE_BUFFER_SOURCE;
+
+
+var output_dir = resolvePath("~/Dropbox/Documents/data/audio/");
+
+var output_format = ".wav";
+
+console.log(" output_dir ", output_dir);
+
+
+// process.exit(9);
+
+
 
 var source_obj = {};
 
@@ -119,17 +131,34 @@ for (var index = 0; index < max_index; index++) {
     console.log(index, " pop_audio_buffer ", source_obj.buffer[index]);
 }
 
+// var output_obj = {};
+
+// output_obj.buffer = new Buffer(source_obj.buffer);
+
+// // ---
+
+// shared_utils.show_object(output_obj.buffer, "total",
+//             "xxdxxdxdx output_obj xxdxxdxdx", output_obj.buffer.length);
+
+// process.exit(9);
+
 // --- save into WAV file --- //
 
-var source_wave_filename = "/tmp/source_wave.wav";
+// var source_wave_filename = "/tmp/source_wave.wav";
+var source_wave = "source_wave";
+
+var source_wave_filename = path.join(output_dir, source_wave + output_format);
+
+
+console.log("source_wave_filename   ", source_wave_filename);
+
 
 shared_utils.write_buffer_to_file(source_obj, source_wave_filename);
 
 console.log("source_wave_filename   ", source_wave_filename);
 
 
-
-
+// console.log("about to stop");
 // process.exit(9);
 
 
@@ -203,7 +232,10 @@ var seed_genome = {
 
 	console.log("genome_buffer length ", audio_genome_synth_obj.buffer.length);
 
-	var genome_synth_raw_filename = "/tmp/genome_synth_raw.wav";
+	var genome_synth_raw = "genome_synth_raw";
+	var genome_synth_raw_filename = path.join(output_dir, genome_synth_raw + output_format);
+
+
 
 
 	// node_utils.write_buffer_to_file(audio_obj, wav_output_filename);
@@ -227,10 +259,12 @@ var seed_genome = {
 
 	// var max_acceptible_diff_per_point = 0.00001;
 	// var max_attempts_per_point = 30000;
-
+	// var filename_aphorism = "_strict";
 
 	var max_acceptible_diff_per_point = 0.01;
 	var max_attempts_per_point = 300;
+	var filename_aphorism = "_sloppy";
+
 
 
 	var curr_gene_to_evolve = 0;
@@ -315,7 +349,9 @@ var seed_genome = {
 
 // --- save into WAV file --- //
 
-var genome_synth_evolved_filename = "/tmp/genome_synth_evolved.wav";
+var genome_synth_evolved = "genome_synth_evolved";
+var genome_synth_evolved_filename = path.join(output_dir, genome_synth_evolved + filename_aphorism + output_format);
+
 
 shared_utils.write_buffer_to_file(audio_genome_synth_obj, genome_synth_evolved_filename);
 

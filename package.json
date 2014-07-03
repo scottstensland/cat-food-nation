@@ -1,6 +1,6 @@
 {
   "name": "cat-food-nation",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "cat-food-nation ===============",
   "main": "src/cat_food_nation.js",
   "directories": {
