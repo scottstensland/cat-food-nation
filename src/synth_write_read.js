@@ -111,11 +111,115 @@ function cb_parse_buffer_as_wav_format(input_obj, property_buffer_raw_input_file
     // var size_buffer = 256;
 };
 
+function test_16_bit_to_32_bit_and_back() {
+
+var size_source_buffer = 4;
+
+var new_16_bit_array = new Uint16Array(size_source_buffer);
+
+new_16_bit_array[0] = 0;
+new_16_bit_array[1] = 32767;
+new_16_bit_array[2] = 32768;
+// new_16_bit_array[3] = 65520;
+new_16_bit_array[3] = 65536 - 1;
+
+// new_16_bit_obj.buffer = new_16_bit_array;
+
+// for (var index = 0; index < new_16_bit_array.length; index++) {
+
+//     console.log("new_16_bit_array ", index, new_16_bit_array[index]);
+// }
+
+// --------------------------------
+
+// var new_32_bit_obj = {};
+
+            // new_32_bit_array[index] = given_16_bit_buffer[index] / 32767 - 1.0;
+
+for (var index = 0; index < size_source_buffer; index++) {
+
+    // console.log("new_16_bit_array ", index, new_16_bit_array[index], new_16_bit_array[index] / 32767 - 1.0);
+
+    var new_32_bit_float = new_16_bit_array[index] / 32768 - 1.0;
+
+    var back_16_bit_int = ~~((new_32_bit_float + 1.0) * 32768);
+
+
+    console.log("new_16_bit_array ", index, new_16_bit_array[index], new_32_bit_float, back_16_bit_int);
+};
+
+// process.exit(8);
+
+
+};
+
+// ---
+
+function test_write_32_bit_float_into_file() {
+
+    var fs = require('fs');
+    var wstream = fs.createWriteStream('data.dat');
+
+    var data = new Float32Array([1.1, 2.2, 3.3, 4.4, 5.5]);
+
+    //prepare the length of the buffer to 4 bytes per float
+    var buffer = new Buffer(data.length*4);
+
+
+    for(var i = 0; i < data.length; i++){
+        //write the float in Little-Endian and move the offset
+        buffer.writeFloatLE(data[i], i*4);
+    }
+
+    wstream.write(buffer);
+    wstream.end();
+};
+
+function test_write_16_bit_int_into_file() {
+
+    var fs = require('fs');
+    var wstream = fs.createWriteStream('data_16_bit_unsigned_ints.dat');
+
+    // var data = new Float32Array([1.1, 2.2, 3.3, 4.4, 5.5]);
+
+    // Uint16Array         2   16-bit unsigned integer                 unsigned short
+
+    var data = new Uint16Array([0, 32767, 32768, 65535]);
+
+    //prepare the length of the buffer to 4 bytes per float
+    // var buffer = new Buffer(data.length*4);
+    var buffer = new Buffer(data.length*2);
+
+
+    for(var i = 0; i < data.length; i++){
+        //write the float in Little-Endian and move the offset
+        // buffer.writeFloatLE(data[i], i*4);
+        buffer.writeUInt16LE(data[i], i*2);
+    }
+
+    wstream.write(buffer);
+    wstream.end();
+};
+
 // ---------------------------------------------------------------- //
 
 	// var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
 
 	console.log("here is shared_utils ", shared_utils);
+
+/*
+    // console.log("ABOUT to call test_write_32_bit_float_into_file ");
+    // test_write_32_bit_float_into_file();
+
+    console.log("ABOUT to call test_write_16_bit_int_into_file ");
+
+    test_write_16_bit_int_into_file();
+
+
+    return;
+
+    // process.exit(8);
+*/
 
 	// var genome_module = require('node-genome');
 	// var genome_module = require('../src/genome');
@@ -135,19 +239,25 @@ function cb_parse_buffer_as_wav_format(input_obj, property_buffer_raw_input_file
 
 
 // ---------- generates nice listenable sin tone ------------- //
-SIZE_BUFFER_SOURCE = 16384;
-var samples_per_cycle = 64;
+// SIZE_BUFFER_SOURCE = 16384;
+// var samples_per_cycle = 64;
 
 
-/*
+
 // ---------- testing ONLY not intended to listen to ------------- //
-SIZE_BUFFER_SOURCE = 4;
+// SIZE_BUFFER_SOURCE = 4;
 // SIZE_BUFFER_SOURCE = 8;
 // SIZE_BUFFER_SOURCE = 256;
+SIZE_BUFFER_SOURCE = 16384;
+
+
+// var samples_per_cycle = 4;
 // var samples_per_cycle = 8;
-var samples_per_cycle = SIZE_BUFFER_SOURCE;
+var samples_per_cycle = 32;
+// var samples_per_cycle = 8;
+// var samples_per_cycle = SIZE_BUFFER_SOURCE;
 // var samples_per_cycle = 64;
-*/
+
 
 
 
@@ -158,8 +268,9 @@ var output_format = ".wav";
 console.log(" output_dir ", output_dir);
 
 
-// process.exit(9);
+// test_16_bit_to_32_bit_and_back();
 
+// process.exit(9);
 
 
 var source_obj = {};
@@ -188,7 +299,7 @@ for (var index = 0; index < max_index; index++) {
 // --- save into WAV file --- //
 
 // var source_wave_filename = "/tmp/source_wave.wav";
-var source_wave = "source_wave";
+var source_wave = "source_wave_" + SIZE_BUFFER_SOURCE + "_" + samples_per_cycle;
 
 var source_wave_filename = path.join(output_dir, source_wave + output_format);
 
@@ -198,6 +309,8 @@ console.log("source_wave_filename   ", source_wave_filename);
 shared_utils.write_buffer_to_wav_file(source_obj, source_wave_filename);
 
 console.log("source_wave_filename   ", source_wave_filename);
+
+return;
 
 // ---------- now read back same wav file ------------ //
 
