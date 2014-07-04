@@ -12,6 +12,8 @@ function resolvePath(str) {
   return path.resolve(str);
 }
 
+// -------------------------------------------------------- //
+
 var evolveit = function(environment_mode) {
 
 console.log("IN evolveit");
@@ -37,7 +39,6 @@ switch (environment_mode) {
         genome_module = require("node-genome");
         break;
 };
-
 
 // ------------------------------------- //
 
