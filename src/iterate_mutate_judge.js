@@ -28,15 +28,16 @@ switch (environment_mode) {
         break;
 
     case "dev":
-        shared_utils  = require(resolvePath("shared-utils"));
-        genome_module = require(resolvePath("node-genome"));
+        shared_utils  = require("shared-utils");
+        genome_module = require("node-genome");
         break;
 
     default :
-        shared_utils  = require(resolvePath("shared-utils"));
-        genome_module = require(resolvePath("node-genome"));
+        shared_utils  = require("shared-utils");
+        genome_module = require("node-genome");
         break;
 };
+
 
 // ------------------------------------- //
 
