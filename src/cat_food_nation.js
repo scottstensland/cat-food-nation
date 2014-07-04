@@ -2,9 +2,26 @@
 
 var path = require('path');
 
-var environment_mode = process.env.NODE_ENV || 'dev';
+// var environment_mode = process.env.NODE_ENV || 'dev';
+var environment_mode = process.argv[2] || "dev";
 
-console.warn("running code in NODE_ENV ", environment_mode);
+console.warn("running code in environment_mode: ", environment_mode);
+
+/*
+switch (environment_mode) {
+    case "dev":
+        // Setup development config
+        break;
+    case "prod":
+        // Setup production config
+        break;
+
+    default :
+    	environment_mode = "dev"; // default to dev
+};
+*/
+
+
 
 /*
 function resolvePath (string) {
@@ -33,6 +50,11 @@ function resolvePath (string) {
 
 
 var iterate_mutate_judge = require("./iterate_mutate_judge");
+var synth_write_read = require("./synth_write_read");
+
+
+
+
 
 
 // var shared_utils = require("shared-utils");
@@ -159,7 +181,10 @@ genome.show();
 
 // ---
 
-iterate_mutate_judge.evolveit();
+// iterate_mutate_judge.evolveit(environment_mode);
+synth_write_read.evolveit(environment_mode);
+
+
 
 
 
