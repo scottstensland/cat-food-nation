@@ -51,6 +51,7 @@ function resolvePath (string) {
 
 var iterate_mutate_judge = require("./iterate_mutate_judge");
 var synth_write_read = require("./synth_write_read");
+var test_write_wav = require("./test_write_wav");
 
 
 
@@ -182,7 +183,10 @@ genome.show();
 // ---
 
 // iterate_mutate_judge.evolveit(environment_mode);
-synth_write_read.evolveit(environment_mode);
+// synth_write_read.evolveit(environment_mode);
+test_write_wav.evolveit(environment_mode);
+
+
 
 
 
