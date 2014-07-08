@@ -39,6 +39,9 @@ switch (environment_mode) {
         break;
 };
 
+console.log("shared_utils ", shared_utils);
+
+
 // ----------------------------------------------- //
 
 
@@ -213,13 +216,24 @@ function cb_after_reading_input_file_grow_curve(input_obj, property_buffer_raw_i
 
     var read_audio_obj = {};
 
+    // read_audio_obj.buffer = shared_utils.convert_16_bit_signed_int_to_32_bit_float(input_obj[property_buffer_input_file]);
     read_audio_obj.buffer = shared_utils.convert_16_bit_signed_int_to_32_bit_float(input_obj[property_buffer_input_file]);
-
+    
     shared_utils.show_object(read_audio_obj, " read_audio_obj 32 bit floating point ", "total", 10);
 
-    var wav_output_filename = "started_32_bit_float_now_16_bit_signed.wav";
 
-    shared_utils.write_32_bit_buffer_to_wav_file(read_audio_obj, wav_output_filename);
+    var audio_16_bit_signed_int_obj = {};
+
+    audio_16_bit_signed_int_obj.buffer  = shared_utils.convert_32_bit_float_into_signed_16_bit_int_lossy(read_audio_obj.buffer);
+
+
+    shared_utils.show_object(audio_16_bit_signed_int_obj, " audio_16_bit_signed_int_obj 16 bit signed int ", "total", 10);
+
+
+
+    var wav_output_filename = "started_32_bit_float_now_back_to_16_bit_signed.wav";
+
+    shared_utils.write_32_bit_buffer_to_wav_file(audio_16_bit_signed_int_obj, wav_output_filename);
 
 };      //      cb_after_reading_input_file_grow_curve
 
@@ -229,7 +243,9 @@ function read_wav_file() {
 
     console.log("read_wav_file");
 
-    var input_file = "/home/stens/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+    // var input_file = resolvePath("~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
+    // var input_file = resolvePath("~/Dropbox/Documents/data/audio/Justice_Genesis_first_30_seconds.wav");
+    var input_file = resolvePath("~/Dropbox/Documents/data/audio/Die_Antwoord_11_doong_doong_minute_sec.wav");
 
     var wav_file_input_obj = {};  // create stub object to which we attach .buffer
 
@@ -241,18 +257,15 @@ function read_wav_file() {
 
     // wav_file_input_obj.filename = "Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
     // wav_file_input_obj.filename = "../data/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+
     wav_file_input_obj.filename = input_file;
 
-
     wav_file_input_obj[property_buffer_raw_input_file] = new Buffer(0);
-
 
     shared_utils.read_file_into_buffer(wav_file_input_obj, property_buffer_raw_input_file,
                                     property_buffer_input_file,
                                     cb_after_reading_input_file_grow_curve);
-
-
-}
+};
 
 // ---------------------------------------------------------------- //
 
