@@ -219,17 +219,21 @@ function cb_after_reading_input_file_grow_curve(input_obj, property_buffer_raw_i
     // read_audio_obj.buffer = shared_utils.convert_16_bit_signed_int_to_32_bit_float(input_obj[property_buffer_input_file]);
     read_audio_obj.buffer = shared_utils.convert_16_bit_signed_int_to_32_bit_float(input_obj[property_buffer_input_file]);
     
-    shared_utils.show_object(read_audio_obj, " read_audio_obj 32 bit floating point ", "total", 10);
+    shared_utils.show_object(read_audio_obj, " CWCWCW read_audio_obj 32 bit floating point ", "total", 10);
 
+    // return;
 
     var audio_16_bit_signed_int_obj = {};
 
     audio_16_bit_signed_int_obj.buffer  = shared_utils.convert_32_bit_float_into_signed_16_bit_int_lossy(read_audio_obj.buffer);
 
 
-    shared_utils.show_object(audio_16_bit_signed_int_obj, " audio_16_bit_signed_int_obj 16 bit signed int ", "total", 10);
+    shared_utils.show_object(audio_16_bit_signed_int_obj, 
+        " SSSSSS audio_16_bit_signed_int_obj 16 bit signed int ", "total", 20);
 
+    // return;
 
+    console.log("\n\n ggggggggggEEEEEEEEEEErrrrrrmanyyyyyyyyyyyyyyyyy\n\n");
 
     var wav_output_filename = "started_32_bit_float_now_back_to_16_bit_signed.wav";
 
@@ -244,8 +248,8 @@ function read_wav_file() {
     console.log("read_wav_file");
 
     // var input_file = resolvePath("~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
-    // var input_file = resolvePath("~/Dropbox/Documents/data/audio/Justice_Genesis_first_30_seconds.wav");
-    var input_file = resolvePath("~/Dropbox/Documents/data/audio/Die_Antwoord_11_doong_doong_minute_sec.wav");
+    var input_file = resolvePath("~/Dropbox/Documents/data/audio/Justice_Genesis_first_30_seconds.wav");
+    // var input_file = resolvePath("~/Dropbox/Documents/data/audio/Die_Antwoord_11_doong_doong_minute_sec.wav");
 
     var wav_file_input_obj = {};  // create stub object to which we attach .buffer
 

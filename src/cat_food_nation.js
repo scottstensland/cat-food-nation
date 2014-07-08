@@ -168,6 +168,24 @@ genome.show();
 */
 
 
+/*
+// var buffer_byte_array = new Buffer(4); // NO fails to store negative numbers
+// var buffer_byte_array = new Int8Array(4); // NO fails to store negative numbers
+var buffer_byte_array = new Int16Array(4); // NO fails to store negative numbers
+
+buffer_byte_array[0] =  -34;
+buffer_byte_array[1] =    0;
+buffer_byte_array[2] =  300;
+buffer_byte_array[3] = -248;
+
+for (var index = 0; index < buffer_byte_array.length; index++) {
+
+	console.log(index, buffer_byte_array[index]);
+}
+
+return;
+*/
+
 
 
 // test_16_bit_into_float_and_back_again.float_to_int_and_back();
