@@ -248,8 +248,22 @@ function read_wav_file() {
     console.log("read_wav_file");
 
     // var input_file = resolvePath("~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
-    var input_file = resolvePath("~/Dropbox/Documents/data/audio/Justice_Genesis_first_30_seconds.wav");
+    // var input_file = resolvePath("../data/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
+    // var input_file = resolvePath("~/Dropbox/Documents/data/audio/Justice_Genesis_first_30_seconds.wav");
     // var input_file = resolvePath("~/Dropbox/Documents/data/audio/Die_Antwoord_11_doong_doong_minute_sec.wav");
+    // var input_file = resolvePath("~/Dropbox/Documents/data/audio/Lee_Smolin_Physics_Envy_and_Economic_Theory_cWn86ESze6M_mono.wav");
+
+    // var input_file = resolvePath("~/Videos/Google_I_O_2014_-wtLJPvx7-ys.wav");
+
+
+    var input_file = resolvePath("../data/started_32_bit_float_now_back_to_16_bit_signed.wav");
+
+
+
+
+
+
+
 
     var wav_file_input_obj = {};  // create stub object to which we attach .buffer
 
