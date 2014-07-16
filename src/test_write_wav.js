@@ -259,12 +259,6 @@ function read_wav_file() {
     var input_file = resolvePath("../data/started_32_bit_float_now_back_to_16_bit_signed.wav");
 
 
-
-
-
-
-
-
     var wav_file_input_obj = {};  // create stub object to which we attach .buffer
 
 
@@ -283,7 +277,8 @@ function read_wav_file() {
     shared_utils.read_file_into_buffer(wav_file_input_obj, property_buffer_raw_input_file,
                                     property_buffer_input_file,
                                     cb_after_reading_input_file_grow_curve);
-};
+
+};      //      read_wav_file
 
 // ---------------------------------------------------------------- //
 
@@ -331,16 +326,26 @@ function read_wav_file() {
 // ---------- testing ONLY not intended to listen to ------------- //
 // SIZE_BUFFER_SOURCE = 4;
 // SIZE_BUFFER_SOURCE = 8;
-SIZE_BUFFER_SOURCE = 256;
+// SIZE_BUFFER_SOURCE = 256;
 // SIZE_BUFFER_SOURCE = 16384;
+SIZE_BUFFER_SOURCE = 32768;
+// SIZE_BUFFER_SOURCE = 131072;
+// SIZE_BUFFER_SOURCE = 1048576;
+
+
+
+
 
 
 // var samples_per_cycle = 4;
 // var samples_per_cycle = 8;
-var samples_per_cycle = 32;
+// var samples_per_cycle = 32;
 // var samples_per_cycle = 8;
 // var samples_per_cycle = SIZE_BUFFER_SOURCE;
-// var samples_per_cycle = 64;
+var samples_per_cycle = 64;
+// var samples_per_cycle = 1024;
+
+
 
 
 // test_write_32_bit_float_to_16_bit_signed_ints_to_file();
@@ -358,9 +363,9 @@ console.log(" output_dir ", output_dir);
 
 // var limit_size_input_file_buffer = 16;
 
-read_wav_file();
+// read_wav_file();
 
-return;
+// return;
 
 // test_16_bit_to_32_bit_and_back();
 
@@ -399,10 +404,35 @@ var source_wave_filename = path.join(output_dir, source_wave + output_format);
 
 
 console.log("source_wave_filename   ", source_wave_filename);
+console.log("write_32_bit_buffer_to_wav_file   ");
 
-shared_utils.write_buffer_to_wav_file(source_obj, source_wave_filename);
+
+
+
+
+
+// shared_utils.write_buffer_to_wav_file(source_obj, source_wave_filename);
+shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(source_obj, source_wave_filename);
 
 console.log("source_wave_filename   ", source_wave_filename);
+
+
+// ---
+
+
+console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
+
+var audio_32_bit_float_from_16_bit_wav_obj = {};
+
+var wav_input_filename = source_wave_filename;
+
+shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(audio_32_bit_float_from_16_bit_wav_obj,
+                                                            wav_input_filename);
+
+
+shared_utils.show_object(audio_32_bit_float_from_16_bit_wav_obj, 
+    " omomomommo audio_32_bit_float_from_16_bit_wav_obj 16 bit signed int ", "total", 20);
+
 
 
 // ------------------------------------------------------------- //
