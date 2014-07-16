@@ -280,6 +280,19 @@ function read_wav_file() {
 
 };      //      read_wav_file
 
+// ---
+
+var cb_read_file_done = function(audio_obj) {
+
+    console.log("cb_read_file_done ");
+    console.log("cb_read_file_done ");
+    console.log("cb_read_file_done ");
+    console.log("cb_read_file_done ");
+
+    shared_utils.show_object(audio_obj, 
+        " SSSSSS audio_obj 32 bit signed float ", "total", 20);
+};
+
 // ---------------------------------------------------------------- //
 
 	// var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
@@ -343,6 +356,7 @@ SIZE_BUFFER_SOURCE = 32768;
 // var samples_per_cycle = 8;
 // var samples_per_cycle = SIZE_BUFFER_SOURCE;
 var samples_per_cycle = 64;
+// var samples_per_cycle = 128;
 // var samples_per_cycle = 1024;
 
 
@@ -421,17 +435,30 @@ console.log("source_wave_filename   ", source_wave_filename);
 
 
 console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
+console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
+console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
+console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
+console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
 
 var audio_32_bit_float_from_16_bit_wav_obj = {};
 
 var wav_input_filename = source_wave_filename;
 
+console.log("wav_input_filename ", wav_input_filename);
+
+var spec = {};
+
 shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(audio_32_bit_float_from_16_bit_wav_obj,
-                                                            wav_input_filename);
+                                                            wav_input_filename, spec, cb_read_file_done);
 
 
-shared_utils.show_object(audio_32_bit_float_from_16_bit_wav_obj, 
-    " omomomommo audio_32_bit_float_from_16_bit_wav_obj 16 bit signed int ", "total", 20);
+// shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(audio_32_bit_float_from_16_bit_wav_obj,
+//                                                             wav_input_filename, spec);
+
+
+
+// shared_utils.show_object(audio_32_bit_float_from_16_bit_wav_obj, 
+//     " omomomommo audio_32_bit_float_from_16_bit_wav_obj 16 bit signed int ", "total", 20);
 
 
 
