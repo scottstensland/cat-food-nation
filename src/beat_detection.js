@@ -153,6 +153,30 @@ do {
 	console.log("curr_interval ", curr_interval);
 	console.log("size_subsection ", size_subsection);
 
+	// ---
+
+	var array_start_end = [];
+
+	var aggregate_index = 0;
+
+	for (var index = 0; index < curr_interval; index++) {
+
+		var this_section = {};
+
+		this_section.index_start = aggregate_index;
+		this_section.index_end   = aggregate_index + size_subsection;
+
+		array_start_end.push(this_section);
+
+		// ---
+
+		aggregate_index += size_subsection;
+	}
+
+	console.log("array_start_end ", array_start_end);
+
+	// ---
+
 	curr_interval++;
 
 } while (size_subsection > minimum_size_subsection);
