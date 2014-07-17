@@ -7,80 +7,18 @@ var environment_mode = process.argv[2] || "dev";
 
 console.warn("running code in environment_mode: ", environment_mode);
 
-/*
-switch (environment_mode) {
-    case "dev":
-        // Setup development config
-        break;
-    case "prod":
-        // Setup production config
-        break;
-
-    default :
-    	environment_mode = "dev"; // default to dev
-};
-*/
-
-
-
-/*
-function resolvePath (string) {
-  if (string.substr(0,1) === '~')
-    string = process.env.HOME + string.substr(1)
-  return path.resolve(string)
-}
-*/
-
-/*
-function resolvePath (string) {
-  if (string.substr(0,1) === '~') {
-    homedir = (process.platform.substr(0, 3) === 'win') ? process.env.HOMEPATH : process.env.HOME;
-    string = homedir + string.substr(1)
-  }
-  return path.resolve(string)
-}
-// */
-
-// function resolvePath(str) {
-//   if (str.substr(0, 2) === '~/') {
-//     str = (process.env.HOME || process.env.HOMEPATH || process.env.HOMEDIR || process.cwd()) + str.substr(1);
-//   }
-//   return path.resolve(str);
-// }
-
 
 var iterate_mutate_judge = require("./iterate_mutate_judge");
 var synth_write_read = require("./synth_write_read");
 var test_write_wav = require("./test_write_wav");
 var test_16_bit_into_float_and_back_again = require("./test_16_bit_into_float_and_back_again");
+var create_sin_curve_write_N_read = require("./create_sin_curve_write_N_read");
+var beat_detection = require("./beat_detection");
 
-
-
-
-
-// var shared_utils = require("shared-utils");
-// var shared_utils = require("/home/stens/Dropbox/Documents/code/github/shared-utils/src/node_utils.js");
-// var shared_utils = require("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js");
-// var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
-
-// var shared_utils = require("/home/scott/Dropbox/Documents/code/github/shared-utils/src/node_utils.js");
-// var shared_utils = shared_utils_obj.shared_utils();
-// var shared_utils = shared_utils_obj.node_utils();
-
-
-// console.log("here is shared_utils ", shared_utils);
-
-
-// var node_utils = require('./node_utils');
-// var node_utils = require("shared-utils");
-
-
-// var genome = require('./genome').init({ name : "Corinde Stensland"});
 
 
 console.log("-----------------");
-// console.log(genome);
-// console.log(genome.says());
+
 
 var add_these = {
 
@@ -191,7 +129,12 @@ return;
 // test_16_bit_into_float_and_back_again.float_to_int_and_back();
 
 // test_write_wav.evolveit(environment_mode);
-iterate_mutate_judge.evolveit(environment_mode);
+// iterate_mutate_judge.evolveit(environment_mode);
+// create_sin_curve_write_N_read.evolveit(environment_mode);
+beat_detection.evolveit(environment_mode);
+
+
+
 
 
 // 

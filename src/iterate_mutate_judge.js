@@ -97,7 +97,7 @@ var cb_read_file_done = function(audio_obj) {
     console.log("cb_read_file_done ");
 
     shared_utils.show_object(audio_obj, 
-        "backHome audio_obj 32 bit signed float ", "total", 0);
+        "backHome audio_obj 32 bit signed float   read_file_done", "total", 0);
 };
 
 // ---
@@ -110,7 +110,7 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 
 
     shared_utils.show_object(audio_obj, 
-        "backHome audio_obj 32 bit signed float cb_write_file_done ", "total", 10);
+        "backHome audio_obj 32 bit signed float    write_file_done ", "total", 10);
 };
 
 
