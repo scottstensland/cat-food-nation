@@ -197,6 +197,7 @@ function test_write_16_bit_int_into_file() {
     wstream.end();
 };
 
+/*
 function cb_after_reading_input_file_grow_curve(input_obj, property_buffer_raw_input_file, property_buffer_input_file) {
 
     console.log("TOP TOP TOP cb_after_reading_input_file_grow_curve");
@@ -229,7 +230,7 @@ function cb_after_reading_input_file_grow_curve(input_obj, property_buffer_raw_i
 
 
     shared_utils.show_object(audio_16_bit_signed_int_obj, 
-        " SSSSSS audio_16_bit_signed_int_obj 16 bit signed int ", "total", 20);
+        "cb_POST_read_POST_convert audio_16_bit_signed_int_obj 16 bit signed int ", "total", 20);
 
     // return;
 
@@ -240,7 +241,7 @@ function cb_after_reading_input_file_grow_curve(input_obj, property_buffer_raw_i
     shared_utils.write_32_bit_buffer_to_wav_file(audio_16_bit_signed_int_obj, wav_output_filename);
 
 };      //      cb_after_reading_input_file_grow_curve
-
+*/
 
 
 function read_wav_file() {
@@ -290,7 +291,7 @@ var cb_read_file_done = function(audio_obj) {
     console.log("cb_read_file_done ");
 
     shared_utils.show_object(audio_obj, 
-        " SSSSSS audio_obj 32 bit signed float ", "total", 20);
+        "backHome audio_obj 32 bit signed float ", "total", 10);
 };
 
 // ---------------------------------------------------------------- //
@@ -339,9 +340,9 @@ var cb_read_file_done = function(audio_obj) {
 // ---------- testing ONLY not intended to listen to ------------- //
 // SIZE_BUFFER_SOURCE = 4;
 // SIZE_BUFFER_SOURCE = 8;
-// SIZE_BUFFER_SOURCE = 256;
+SIZE_BUFFER_SOURCE = 256;
 // SIZE_BUFFER_SOURCE = 16384;
-SIZE_BUFFER_SOURCE = 32768;
+// SIZE_BUFFER_SOURCE = 32768;
 // SIZE_BUFFER_SOURCE = 131072;
 // SIZE_BUFFER_SOURCE = 1048576;
 
@@ -430,15 +431,7 @@ shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(source_obj, source_wav
 
 console.log("source_wave_filename   ", source_wave_filename);
 
-
 // ---
-
-
-console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
-console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
-console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
-console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
-console.log("AAAAAbout to call read_16_bit_wav_file_into_32_bit_float_buffer");
 
 var audio_32_bit_float_from_16_bit_wav_obj = {};
 

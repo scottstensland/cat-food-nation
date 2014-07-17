@@ -24,7 +24,6 @@ var genome_module;
 switch (environment_mode) {
 
     case "nubia": // repository owner tinkering mode - ignore it and use nothing which defaults to dev which is OK
-        // shared_utils  = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
         shared_utils  = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils"));
         genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
         break;
@@ -40,6 +39,12 @@ switch (environment_mode) {
         break;
 };
 
+// ---
+
+
+var fs = require('fs');
+
+
 // ------------------------------------- //
 
 function do_typed_array_calc(given_obj) {
@@ -50,7 +55,7 @@ function do_typed_array_calc(given_obj) {
 };
 
 // -------------
-
+/*
 function cb_after_reading_input_file_grow_curve(input_obj, property_buffer_raw_input_file, property_buffer_input_file) {
 
     console.log("TOP TOP TOP cb_after_reading_input_file_grow_curve");
@@ -80,9 +85,84 @@ function cb_after_reading_input_file_grow_curve(input_obj, property_buffer_raw_i
     // var buff_size_from_file = input_obj[property_buffer_input_file].length;
     // var size_buffer = 256;
 };
+*/
 
 // ---
 
+var cb_read_file_done = function(audio_obj) {
+
+    console.log("cb_read_file_done ");
+    console.log("cb_read_file_done ");
+    console.log("cb_read_file_done ");
+    console.log("cb_read_file_done ");
+
+    shared_utils.show_object(audio_obj, 
+        "backHome audio_obj 32 bit signed float ", "total", 0);
+};
+
+// ---
+
+var cb_write_file_done = function(audio_obj, cb_post_write) {
+
+    console.log("cb_write_file_done ");
+    console.log("cb_write_file_done ");
+    console.log("cb_write_file_done ");
+
+
+    shared_utils.show_object(audio_obj, 
+        "backHome audio_obj 32 bit signed float cb_write_file_done ", "total", 10);
+};
+
+
+/*
+var do_read_logic = function() {
+
+	// ------------ read wav file -------------------- //
+
+
+	var wav_file_input_obj = {};  // create stub object to which we attach .buffer
+
+
+	var property_buffer_raw_input_file = "buffer_raw_input_file";
+	var property_buffer_input_file     = "buffer_input_file";
+
+	// shared_utils.copy_properties_across_objects(audio_file_obj, wav_file_input_obj);
+
+	// wav_file_input_obj.filename = "Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+	// wav_file_input_obj.filename = "../data/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+	wav_file_input_obj.filename = genome_synth_evolved_filename;
+
+
+	wav_file_input_obj[property_buffer_raw_input_file] = new Buffer(0);
+
+
+	// shared_utils.read_file_into_buffer(wav_file_input_obj, property_buffer_raw_input_file,
+	//                                 property_buffer_input_file,
+	//                                 cb_after_reading_input_file_grow_curve);
+
+
+	// shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
+	// 								wav_file_input_obj, 
+	// 								property_buffer_raw_input_file,
+	//                                 property_buffer_input_file,
+	//                                 cb_read_file_done);
+
+	console.log("abouttttt to read genome_synth_evolved_filename ", genome_synth_evolved_filename);
+
+	var spec = {};
+
+	shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
+									genome_synth_evolved_filename, 
+	                                spec,
+	                                cb_read_file_done);
+
+};		//		do_read_logic
+*/
+
+
+// ---
+
+/*
 function cb_parse_buffer_as_wav_format(input_obj, property_buffer_raw_input_file, property_buffer_input_file) {
 
     console.log("TOP TOP TOP cb_parse_buffer_as_wav_format");
@@ -112,7 +192,7 @@ function cb_parse_buffer_as_wav_format(input_obj, property_buffer_raw_input_file
     // var buff_size_from_file = input_obj[property_buffer_input_file].length;
     // var size_buffer = 256;
 };
-
+*/
 
 	// ------------------------------------- //
 
@@ -125,7 +205,7 @@ function cb_parse_buffer_as_wav_format(input_obj, property_buffer_raw_input_file
 	// var genome_module = require('node-genome');
 	// var genome_module = require('../src/genome');
 	// var genome_module = require("~/Dropbox/Documents/code/github/node-genome/src/genome");
-	var genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
+	// var genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
 	var genome = genome_module.init({ name : "Corinde Wiers"});
 
 	genome.set_random_seed(117); // uncomment to see repeated random sequence
@@ -134,8 +214,8 @@ function cb_parse_buffer_as_wav_format(input_obj, property_buffer_raw_input_file
 	var aphorism_sloppy = "sloppy";
 	var aphorism_strict = "strict";
 
-	// var desired_aphorism = aphorism_sloppy;
-	var desired_aphorism = aphorism_strict;
+	var desired_aphorism = aphorism_sloppy;
+	// var desired_aphorism = aphorism_strict;
 
 	// ---
 /*
@@ -240,10 +320,11 @@ var source_wave_filename = path.join(output_dir, source_wave + output_format);
 
 console.log("source_wave_filename   ", source_wave_filename);
 
-
-shared_utils.write_buffer_to_wav_file(source_obj, source_wave_filename);
+shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(source_obj, source_wave_filename);
 
 console.log("source_wave_filename   ", source_wave_filename);
+
+// return;
 
 // ---------- now read back same wav file ------------ //
 
@@ -355,13 +436,14 @@ var seed_genome = {
 	var genome_synth_raw = "genome_synth_raw";
 	var genome_synth_raw_filename = path.join(output_dir, genome_synth_raw + output_format);
 
-
-
-
 	// node_utils.write_buffer_to_wav_file(audio_obj, wav_output_filename);
-	shared_utils.write_buffer_to_wav_file(audio_genome_synth_raw_obj, genome_synth_raw_filename);
+	// shared_utils.write_buffer_to_wav_file(audio_genome_synth_raw_obj, genome_synth_raw_filename);
+	shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(audio_genome_synth_raw_obj, genome_synth_raw_filename);
 
-	console.log("genome_synth_raw_filename   ", genome_synth_raw_filename);
+
+	console.log("genome_synth_raw_filename   ", genome_synth_raw_filename); // pure static at this point
+
+	// return;
 
 	// --- do buffer diff
 
@@ -371,11 +453,13 @@ var seed_genome = {
 					};
 
 	shared_utils.diff_buffers(source_obj, audio_genome_synth_raw_obj, diff_spec);
-	console.log("___________ PRE evolve diff_spec   ", diff_spec,
+
+	console.log(  "___________ PRE evolve diff_spec   ", diff_spec,
 				"\n___________ PRE evolve diff_spec");
 
 	// --- now iterate across cycles of mutation + judge until satisfactory goodness is reached
 
+	// return;
 
 
 	var max_acceptible_diff_per_point;
@@ -494,9 +578,8 @@ var seed_genome = {
 					};
 
 	shared_utils.diff_buffers(source_obj, audio_genome_synth_evolved_obj, diff_spec);
-	console.log("___________ POST evolve diff_spec   ", diff_spec,
+	console.log(  "___________ POST evolve diff_spec   ", diff_spec,
 				"\n___________ POST evolve diff_spec ");
-
 
 
 // --- save into WAV file --- //
@@ -506,13 +589,40 @@ var genome_synth_evolved_filename = path.join(output_dir, genome_synth_evolved +
 
 shared_utils.show_object(audio_genome_synth_evolved_obj, " POST after reading file ", "total", 10);
 
-shared_utils.write_buffer_to_wav_file(audio_genome_synth_evolved_obj, genome_synth_evolved_filename);
+// shared_utils.write_buffer_to_wav_file(audio_genome_synth_evolved_obj, genome_synth_evolved_filename);
+shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(audio_genome_synth_evolved_obj, 
+															genome_synth_evolved_filename);
 
 console.log("genome_synth_evolved_filename   ", genome_synth_evolved_filename);
 
 
+// return;
+
+// bbb
+
+// ------------  need to flush above write_wav method  !!!!!!!!!!!!!!!!!
+
+// return;
+
+/*
+if (fs.existsSync(genome_synth_evolved_filename)) {
+
+	console.log("genome_synth_evolved_filename does exist ", genome_synth_evolved_filename);
+
+    // Do something
+} else {
+
+	console.log("genome_synth_evolved_filename does NOT exist ", genome_synth_evolved_filename);
+
+}
+*/
+// return;
+
+
+
 // ------------ read wav file -------------------- //
 
+console.log("\n\nread wav file\n\n");
 
 var wav_file_input_obj = {};  // create stub object to which we attach .buffer
 
@@ -530,9 +640,28 @@ wav_file_input_obj.filename = genome_synth_evolved_filename;
 wav_file_input_obj[property_buffer_raw_input_file] = new Buffer(0);
 
 
-shared_utils.read_file_into_buffer(wav_file_input_obj, property_buffer_raw_input_file,
-                                property_buffer_input_file,
-                                cb_after_reading_input_file_grow_curve);
+// shared_utils.read_file_into_buffer(wav_file_input_obj, property_buffer_raw_input_file,
+//                                 property_buffer_input_file,
+//                                 cb_after_reading_input_file_grow_curve);
+
+
+// shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
+// 								wav_file_input_obj, 
+// 								property_buffer_raw_input_file,
+//                                 property_buffer_input_file,
+//                                 cb_read_file_done);
+
+console.log("abouttttt to read genome_synth_evolved_filename ", genome_synth_evolved_filename);
+
+var spec = {};
+
+shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
+								wav_file_input_obj,
+								genome_synth_evolved_filename, 
+                                spec,
+                                cb_read_file_done);
+
+
 
 
 	// ---
