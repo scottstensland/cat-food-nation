@@ -104,10 +104,13 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 
 // ---------- generates nice listenable sin tone ------------- //
 
-SIZE_BUFFER_SOURCE = 256;
+SIZE_BUFFER_SOURCE = 64;
+// SIZE_BUFFER_SOURCE = 256;
 // SIZE_BUFFER_SOURCE = 16384;
 
-var samples_per_cycle = 64;
+// var samples_per_cycle = 64;
+var samples_per_cycle = SIZE_BUFFER_SOURCE;
+// var samples_per_cycle = 256;
 
 
 
@@ -125,8 +128,8 @@ var source_obj = {};
 
 var source_obj = shared_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
 
-var max_index = 3;
-// var max_index = SIZE_BUFFER_SOURCE;
+// var max_index = 3;
+var max_index = SIZE_BUFFER_SOURCE;
 
 for (var index = 0; index < max_index; index++) {
 
@@ -142,6 +145,12 @@ var curr_interval = 2;	// take entire input buffer and divide by this looking fo
 var size_subsection;
 
 var count_subsection = 0;
+
+var size_chunks;
+var curr_chunk;
+var curr_start;
+var curr_end;
+var curr_sample;
 
 do {
 
@@ -174,6 +183,31 @@ do {
 	}
 
 	console.log("array_start_end ", array_start_end);
+
+    // ---
+
+    size_chunks = array_start_end.length;
+    /*
+    for (var curr_chunk_index = 0; curr_chunk_index < size_chunks; curr_chunk_index++) {
+
+        curr_chunk = array_start_end[curr_chunk_index];
+
+        curr_start = curr_chunk.index_start;
+        curr_end   = curr_chunk.index_end;
+
+        console.log(curr_chunk_index, " curr_chunk ", curr_chunk, curr_start, curr_end);
+
+        for (var index_sample = curr_start; index_sample < curr_end; index_sample++) {
+
+            curr_sample = source_obj.buffer[index_sample];
+
+            console.log(index_sample, " curr_sample ", curr_sample);
+        }
+    }
+    */
+
+
+    console.log("size_chunks ", size_chunks);    
 
 	// ---
 
