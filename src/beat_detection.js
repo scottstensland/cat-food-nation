@@ -104,14 +104,16 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 
 // ---------- generates nice listenable sin tone ------------- //
 
-SIZE_BUFFER_SOURCE = 64;
-// SIZE_BUFFER_SOURCE = 256;
+// SIZE_BUFFER_SOURCE = 64;
+// SIZE_BUFFER_SOURCE = 128;
+SIZE_BUFFER_SOURCE = 256;
+// SIZE_BUFFER_SOURCE = 1024;
 // SIZE_BUFFER_SOURCE = 16384;
 
+var samples_per_cycle = 32;
 // var samples_per_cycle = 64;
-var samples_per_cycle = SIZE_BUFFER_SOURCE;
+// var samples_per_cycle = SIZE_BUFFER_SOURCE;
 // var samples_per_cycle = 256;
-
 
 
 var output_dir = resolvePath("~/Dropbox/Documents/data/audio/");
@@ -120,9 +122,7 @@ var output_format = ".wav";
 
 console.log(" output_dir ", output_dir);
 
-
 // ---------- populate sin curve ------------- //
-
 
 var source_obj = {};
 
@@ -136,9 +136,12 @@ for (var index = 0; index < max_index; index++) {
     console.log(index, " pop_audio_buffer ", source_obj.buffer[index]);
 }
 
+// return;
+
 // --- iterate across to identify dominate frequency --- //
 
 var minimum_size_subsection = 10;
+// var minimum_size_subsection = 25;
 
 var curr_interval = 2;	// take entire input buffer and divide by this looking for similarities between such subsections
 
@@ -152,6 +155,8 @@ var curr_start;
 var curr_end;
 var curr_sample;
 
+// var curr_sample_space;
+
 do {
 
 	console.log("count_subsection ------------ ", count_subsection);
@@ -164,6 +169,7 @@ do {
 
 	// ---
 
+    /*
 	var array_start_end = [];
 
 	var aggregate_index = 0;
@@ -187,6 +193,9 @@ do {
     // ---
 
     size_chunks = array_start_end.length;
+    */
+
+
     /*
     for (var curr_chunk_index = 0; curr_chunk_index < size_chunks; curr_chunk_index++) {
 
@@ -205,25 +214,40 @@ do {
         }
     }
     */
+    
 
     var offset_jump;
     var iii;
     var audio_value;
-    var aggregate_total = 0;
-    var aggregate_diff = 0;
+
+    var aggregate_total;
+    var aggregate_diff;
+    var subsection_total = 0;
+    var subsection_diff = 0;
+
     var sample_value;
+    var total_value;
+    var diff_value;
 
     for (var index_sample = 0; index_sample < size_subsection; index_sample++) {
+    // for (var index_sample = 0; index_sample < 2; index_sample++) {
 
         offset_jump = 0;
+        aggregate_total = 0;
+        aggregate_diff = 0;
 
         for (var index_interval = 0; index_interval < curr_interval; index_interval++) {
 
             iii = index_sample + offset_jump;
 
+            // stens TODO - just calc standard deviation across - 
+
             audio_value = source_obj.buffer[iii];
 
-            aggregate_total += Math.abs(audio_value);
+            total_value = Math.abs(audio_value);
+
+             aggregate_total += total_value;
+            subsection_total += total_value;
 
             if (index_interval == 0) {
 
@@ -231,9 +255,11 @@ do {
 
             } else {
 
-                aggregate_diff += Math.abs(sample_value - audio_value);
-            }
+                diff_value = Math.abs(sample_value - audio_value);
 
+                 aggregate_diff += diff_value;
+                subsection_diff += diff_value;
+            }
 
             // ---
 
@@ -246,18 +272,19 @@ do {
 
             offset_jump += size_subsection;
 
-
             // console.log(index_interval, curr_start, curr_end, offset_jump);
             // console.log(index_interval, iii, offset_jump);
-            console.log(index_sample, index_interval, iii, audio_value);
-        }
+            console.log(size_subsection, iii, index_sample, index_interval, audio_value);
+        };
+
+        console.log("aggregate_total ", aggregate_total/curr_interval, " aggregate_diff ", aggregate_diff/curr_interval);
     };
 
-    console.log("aggregate_total ", aggregate_total, " aggregate_diff ", aggregate_diff);    
+    var sub_points = curr_interval * size_subsection;
+        
+    console.log(size_subsection, " subsection total ", subsection_total, subsection_total/sub_points, " diff ", subsection_diff, sub_points, subsection_diff/sub_points);
 
-
-
-    console.log("size_chunks ", size_chunks);    
+    // console.log("size_chunks ", size_chunks);    
 
 	// ---
 
@@ -266,8 +293,7 @@ do {
 } while (size_subsection > minimum_size_subsection);
 
 
-
-return;
+// return;
 
 // ---------- write to output file ------------- //
 
@@ -283,7 +309,7 @@ shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(source_obj, source_wav
 
 console.log("source_wave_filename   ", source_wave_filename);
 
-// return;
+return;
 
 
 // ------------ read wav file -------------------- //
