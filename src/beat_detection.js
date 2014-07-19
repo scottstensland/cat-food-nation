@@ -206,6 +206,56 @@ do {
     }
     */
 
+    var offset_jump;
+    var iii;
+    var audio_value;
+    var aggregate_total = 0;
+    var aggregate_diff = 0;
+    var sample_value;
+
+    for (var index_sample = 0; index_sample < size_subsection; index_sample++) {
+
+        offset_jump = 0;
+
+        for (var index_interval = 0; index_interval < curr_interval; index_interval++) {
+
+            iii = index_sample + offset_jump;
+
+            audio_value = source_obj.buffer[iii];
+
+            aggregate_total += Math.abs(audio_value);
+
+            if (index_interval == 0) {
+
+                sample_value = audio_value;
+
+            } else {
+
+                aggregate_diff += Math.abs(sample_value - audio_value);
+            }
+
+
+            // ---
+
+            // curr_chunk = array_start_end[index_interval];
+
+            // curr_start = curr_chunk.index_start;
+            // curr_end   = curr_chunk.index_end;
+
+            // console.log(index_interval, curr_start, curr_end);
+
+            offset_jump += size_subsection;
+
+
+            // console.log(index_interval, curr_start, curr_end, offset_jump);
+            // console.log(index_interval, iii, offset_jump);
+            console.log(index_sample, index_interval, iii, audio_value);
+        }
+    };
+
+    console.log("aggregate_total ", aggregate_total, " aggregate_diff ", aggregate_diff);    
+
+
 
     console.log("size_chunks ", size_chunks);    
 
