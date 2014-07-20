@@ -263,17 +263,8 @@ do {
 
             // ---
 
-            // curr_chunk = array_start_end[index_interval];
-
-            // curr_start = curr_chunk.index_start;
-            // curr_end   = curr_chunk.index_end;
-
-            // console.log(index_interval, curr_start, curr_end);
-
             offset_jump += size_subsection;
 
-            // console.log(index_interval, curr_start, curr_end, offset_jump);
-            // console.log(index_interval, iii, offset_jump);
             console.log(size_subsection, iii, index_sample, index_interval, audio_value);
         };
 
