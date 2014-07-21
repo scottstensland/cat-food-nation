@@ -144,15 +144,38 @@ var samples_per_cycle = 17;
 // var samples_per_cycle = 256;
 
 
-var output_dir = resolvePath("~/Dropbox/Documents/data/audio/");
+var audio_file_dir = resolvePath("~/Dropbox/Documents/data/audio/");
 
 var output_format = ".wav";
 
-console.log(" output_dir ", output_dir);
-
-// ---------- populate sin curve ------------- //
+console.log(" audio_file_dir ", audio_file_dir);
 
 var source_obj = {};
+
+
+// ----------- read wav file populate buffer ----------------  //
+
+
+// var audio_32_bit_float_from_16_bit_wav_obj = {};
+
+var raw_input_filename = "Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+
+var wav_input_filename = path.join(audio_file_dir, raw_input_filename);
+
+console.log("wav_input_filename ", wav_input_filename);
+
+var spec = {};
+
+shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(source_obj,
+                                                            wav_input_filename, spec, cb_read_file_done);
+
+
+
+// return;
+
+
+/*
+// ---------- populate sin curve ------------- //
 
 var source_obj = shared_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
 
@@ -168,6 +191,13 @@ for (var index = 0; index < max_index; index++) {
 
 console.log("\n\n");
 
+*/
+
+// ---- read wav file populate buffer ---- //
+
+
+
+var detect_fundamental_frequency = function(audio_obj) {
 
 // --- iterate across to identify dominate frequency --- //
 
@@ -259,8 +289,8 @@ do {
 
         curr_right = curr_left + size_subsection;
 
-        curr_sample_left = source_obj.buffer[curr_left];
-        curr_sample_right = source_obj.buffer[curr_right];
+        curr_sample_left = audio_obj.buffer[curr_left];
+        curr_sample_right = audio_obj.buffer[curr_right];
 
         subsection_total += curr_sample_right;
         subsection_diff  += Math.abs(curr_sample_left - curr_sample_right);
@@ -299,6 +329,12 @@ do {
     curr_interval++;
 
 } while (size_subsection > minimum_size_subsection);
+
+};
+exports.detect_fundamental_frequency = detect_fundamental_frequency;
+
+detect_fundamental_frequency(source_obj);
+
 
 return;
 
@@ -443,7 +479,7 @@ do {
 
 var source_wave = "source_wave";
 
-var source_wave_filename = path.join(output_dir, source_wave + output_format);
+var source_wave_filename = path.join(audio_file_dir, source_wave + output_format);
 
 
 console.log("source_wave_filename   ", source_wave_filename);
