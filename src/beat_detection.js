@@ -43,6 +43,8 @@ switch (environment_mode) {
 
 var fs = require('fs');
 
+var util = require('util');
+
 // ------------------------------------- //
 
 var compare_source_with_post_write_read = function(source_obj, post_process_obj) {
@@ -111,7 +113,8 @@ SIZE_BUFFER_SOURCE = 256;
 // SIZE_BUFFER_SOURCE = 16384;
 
 // var samples_per_cycle = 8;
-var samples_per_cycle = 16;
+// var samples_per_cycle = 16;
+var samples_per_cycle = 17;
 // var samples_per_cycle = 32;
 // var samples_per_cycle = 64;
 // var samples_per_cycle = SIZE_BUFFER_SOURCE;
@@ -185,7 +188,7 @@ var aggregate_total;
 var aggregate_diff;
 var subsection_total;
 var subsection_diff;
-
+var count_num_iterations;
 
 do {
 
@@ -213,8 +216,8 @@ do {
     // stens TODO - we may want to compare more than ONE pair ... make it a parm to compare X cycles
 
 
-    console.log("size_subsection ", size_subsection, " curr_interval ", curr_interval, 
-                " size_increment ", size_increment, reconstituted_size_subsection);
+    // console.log("size_subsection ", size_subsection, " curr_interval ", curr_interval, 
+    //             " size_increment ", size_increment, reconstituted_size_subsection);
 
     // min_left = 0;
     // max_left = size_subsection;
@@ -227,6 +230,7 @@ do {
 
     subsection_total = 0;
     subsection_diff = 0;
+    count_num_iterations = 0;
 
     for (curr_left = 0; curr_left < reconstituted_size_subsection; curr_left += size_increment) {
 
@@ -237,11 +241,21 @@ do {
 
         subsection_total += curr_sample_right;
         subsection_diff  += Math.abs(curr_sample_left - curr_sample_right);
+        count_num_iterations++;
 
-        console.log(reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
+        // console.log("User %s has %d points", userName, userPoints);
+
+        // console.log(reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
+
+        // console.log("aaa %d %d %f %d %f", reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
+        // process.stdout.write('aaa %d %d %f %d %f\n', reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
+        console.log("" + reconstituted_size_subsection,
+                    curr_left, curr_sample_left.toFixed(5), 
+                    curr_right, curr_sample_right.toFixed(5));
     };
 
-    console.log(size_subsection, samples_per_cycle, " subsection_diff ", subsection_diff);
+    console.log("" + size_subsection, samples_per_cycle, count_num_iterations,
+             " subsection_diff ", subsection_diff/count_num_iterations);
 
 
     // ---
