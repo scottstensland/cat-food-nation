@@ -24,20 +24,26 @@ var genome_module;
 switch (environment_mode) {
 
     case "nubia": // repository owner tinkering mode - ignore it and use nothing which defaults to dev which is OK
+
+        console.log("environment_mode is ", environment_mode, " so pulling in sibling dir source code");
         shared_utils  = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils"));
         genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
         break;
 
     case "dev":
+        console.log("environment_mode is ", environment_mode, " so using locally installed npm module");
         shared_utils  = require("shared-utils");
         genome_module = require("node-genome");
         break;
 
     default :
+        console.log("environment_mode is ", environment_mode, " so using locally installed npm module");
         shared_utils  = require("shared-utils");
         genome_module = require("node-genome");
         break;
 };
+
+console.log(shared_utils);
 
 // ---
 
@@ -87,6 +93,23 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
     shared_utils.show_object(audio_obj, 
         "backHome audio_obj 32 bit signed float    write_file_done ", "total", 10);
 };
+
+// ---
+
+
+
+/*
+var some_var = 2.07;
+
+console.log(shared_utils.toFixed(some_var, 5));
+
+var some_neg_var = -2.08;
+
+console.log(shared_utils.toFixed(some_neg_var, 5));
+
+return;
+*/
+
 
 // ------------  synthesize an audio buffer  ------------  //
 
@@ -249,13 +272,25 @@ do {
 
         // console.log("aaa %d %d %f %d %f", reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
         // process.stdout.write('aaa %d %d %f %d %f\n', reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
-        console.log("" + reconstituted_size_subsection,
-                    curr_left, curr_sample_left.toFixed(5), 
-                    curr_right, curr_sample_right.toFixed(5));
+        console.log("" + shared_utils.toFixed(reconstituted_size_subsection, 5),
+                    // curr_left, curr_sample_left.toFixed(5), 
+                    // curr_right, curr_sample_right.toFixed(5), " vs mine ",
+                    shared_utils.toFixed(curr_left, 5), shared_utils.toFixed(curr_sample_left, 5), 
+                    shared_utils.toFixed(curr_right, 5), shared_utils.toFixed(curr_sample_right, 5)
+                    );
     };
 
-    console.log("" + size_subsection, samples_per_cycle, count_num_iterations,
-             " subsection_diff ", subsection_diff/count_num_iterations);
+    // console.log("" + size_subsection, samples_per_cycle, count_num_iterations,
+    //          " subsection_diff ", subsection_diff/count_num_iterations);
+
+
+    console.log("" + shared_utils.toFixed(size_subsection, 5),
+        shared_utils.toFixed(samples_per_cycle, 5),
+        shared_utils.toFixed(count_num_iterations, 5),
+             " subsection_diff ", 
+              shared_utils.toFixed(subsection_diff/count_num_iterations, 5)
+             );
+
 
 
     // ---
