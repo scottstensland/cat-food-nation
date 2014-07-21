@@ -106,11 +106,13 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 
 // SIZE_BUFFER_SOURCE = 64;
 // SIZE_BUFFER_SOURCE = 128;
-// SIZE_BUFFER_SOURCE = 256;
+SIZE_BUFFER_SOURCE = 256;
 // SIZE_BUFFER_SOURCE = 1024;
-SIZE_BUFFER_SOURCE = 16384;
+// SIZE_BUFFER_SOURCE = 16384;
 
-var samples_per_cycle = 32;
+// var samples_per_cycle = 8;
+var samples_per_cycle = 16;
+// var samples_per_cycle = 32;
 // var samples_per_cycle = 64;
 // var samples_per_cycle = SIZE_BUFFER_SOURCE;
 // var samples_per_cycle = 256;
@@ -128,8 +130,8 @@ var source_obj = {};
 
 var source_obj = shared_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
 
-// var max_index = 3;
-var max_index = SIZE_BUFFER_SOURCE;
+var max_index = 3;
+// var max_index = SIZE_BUFFER_SOURCE;
 
 for (var index = 0; index < max_index; index++) {
 
@@ -177,6 +179,14 @@ var reconstituted_size_subsection;
 // var max_size_subsample_to_do_increment_fixup = 30;
 var max_size_subsample_to_do_increment_fixup = max_samples_per_subsection;
 
+// ---
+
+// var aggregate_total;
+// var aggregate_diff;
+var subsection_total;
+var subsection_diff;
+
+
 do {
 
     size_subsection = ~~(SIZE_BUFFER_SOURCE / curr_interval);
@@ -198,7 +208,9 @@ do {
         size_increment = ~~(size_subsection / max_samples_per_subsection);
 
         reconstituted_size_subsection = size_increment * max_samples_per_subsection;
-    }
+    };
+
+    // stens TODO - we may want to compare more than ONE pair ... make it a parm to compare X cycles
 
 
     console.log("size_subsection ", size_subsection, " curr_interval ", curr_interval, 
@@ -212,17 +224,27 @@ do {
 
     // console.log("min_left ", min_left, " max_left ", max_left, " min_right ", min_right, " max_right ", max_right);
 
+
+    subsection_total = 0;
+    subsection_diff = 0;
+
     for (curr_left = 0; curr_left < reconstituted_size_subsection; curr_left += size_increment) {
 
-        curr_right = curr_left + reconstituted_size_subsection;
+        curr_right = curr_left + size_subsection;
 
         curr_sample_left = source_obj.buffer[curr_left];
         curr_sample_right = source_obj.buffer[curr_right];
 
+        subsection_total = curr_sample_right;
+        subsection_diff = Math.abs(curr_sample_left - curr_sample_right);
 
         console.log(reconstituted_size_subsection, curr_left, curr_right);
+    };
 
-    }
+    console.log(size_subsection, samples_per_cycle, " subsection_diff ", subsection_diff);
+
+
+    // ---
     
     prev_size_subsection = size_subsection;
     curr_interval++;
