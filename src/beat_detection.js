@@ -106,9 +106,9 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 
 // SIZE_BUFFER_SOURCE = 64;
 // SIZE_BUFFER_SOURCE = 128;
-SIZE_BUFFER_SOURCE = 256;
+// SIZE_BUFFER_SOURCE = 256;
 // SIZE_BUFFER_SOURCE = 1024;
-// SIZE_BUFFER_SOURCE = 16384;
+SIZE_BUFFER_SOURCE = 16384;
 
 var samples_per_cycle = 32;
 // var samples_per_cycle = 64;
@@ -156,19 +156,26 @@ var size_chunks;
 var curr_chunk;
 var curr_start;
 var curr_end;
-var curr_sample;
+var curr_sample_left;
+var curr_sample_right;
 
 // var curr_sample_space;
 
 var curr_left;
-var min_left;
-var max_left;
+// var min_left;
+// var max_left;
 
 var curr_right;
-var min_right;
-var max_right;
+// var min_right;
+// var max_right;
 
 var prev_size_subsection = 0;
+
+var max_samples_per_subsection = 30;
+var size_increment;
+var reconstituted_size_subsection;
+// var max_size_subsample_to_do_increment_fixup = 30;
+var max_size_subsample_to_do_increment_fixup = max_samples_per_subsection;
 
 do {
 
@@ -176,21 +183,44 @@ do {
 
     if (size_subsection == prev_size_subsection) {
 
+        curr_interval++;
         continue;
     }
 
-    console.log("size_subsection ", size_subsection, " curr_interval ", curr_interval);
+    if (size_subsection < max_size_subsample_to_do_increment_fixup) {        
 
-    min_left = 0;
-    max_left = size_subsection;
+        size_increment = 1;
 
-    min_right = size_subsection;
-    max_right = size_subsection * 2;
+        reconstituted_size_subsection = size_subsection;
 
-    console.log("min_left ", min_left, " max_left ", max_left, " min_right ", min_right, " max_right ", max_right);
+    } else {
 
-    for (curr_left = min_left; curr_left < max_left; curr_left++) {
+        size_increment = ~~(size_subsection / max_samples_per_subsection);
 
+        reconstituted_size_subsection = size_increment * max_samples_per_subsection;
+    }
+
+
+    console.log("size_subsection ", size_subsection, " curr_interval ", curr_interval, 
+                " size_increment ", size_increment, reconstituted_size_subsection);
+
+    // min_left = 0;
+    // max_left = size_subsection;
+
+    // min_right = size_subsection;
+    // max_right = size_subsection * 2;
+
+    // console.log("min_left ", min_left, " max_left ", max_left, " min_right ", min_right, " max_right ", max_right);
+
+    for (curr_left = 0; curr_left < reconstituted_size_subsection; curr_left += size_increment) {
+
+        curr_right = curr_left + reconstituted_size_subsection;
+
+        curr_sample_left = source_obj.buffer[curr_left];
+        curr_sample_right = source_obj.buffer[curr_right];
+
+
+        console.log(reconstituted_size_subsection, curr_left, curr_right);
 
     }
     
