@@ -181,8 +181,8 @@ var max_size_subsample_to_do_increment_fixup = max_samples_per_subsection;
 
 // ---
 
-// var aggregate_total;
-// var aggregate_diff;
+var aggregate_total;
+var aggregate_diff;
 var subsection_total;
 var subsection_diff;
 
@@ -235,10 +235,10 @@ do {
         curr_sample_left = source_obj.buffer[curr_left];
         curr_sample_right = source_obj.buffer[curr_right];
 
-        subsection_total = curr_sample_right;
-        subsection_diff = Math.abs(curr_sample_left - curr_sample_right);
+        subsection_total += curr_sample_right;
+        subsection_diff  += Math.abs(curr_sample_left - curr_sample_right);
 
-        console.log(reconstituted_size_subsection, curr_left, curr_right);
+        console.log(reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
     };
 
     console.log(size_subsection, samples_per_cycle, " subsection_diff ", subsection_diff);
