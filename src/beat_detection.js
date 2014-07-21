@@ -138,6 +138,9 @@ for (var index = 0; index < max_index; index++) {
 
 // return;
 
+console.log("\n\n");
+
+
 // --- iterate across to identify dominate frequency --- //
 
 var minimum_size_subsection = 10;
@@ -156,6 +159,49 @@ var curr_end;
 var curr_sample;
 
 // var curr_sample_space;
+
+var curr_left;
+var min_left;
+var max_left;
+
+var curr_right;
+var min_right;
+var max_right;
+
+var prev_size_subsection = 0;
+
+do {
+
+    size_subsection = ~~(SIZE_BUFFER_SOURCE / curr_interval);
+
+    if (size_subsection == prev_size_subsection) {
+
+        continue;
+    }
+
+    console.log("size_subsection ", size_subsection, " curr_interval ", curr_interval);
+
+    min_left = 0;
+    max_left = size_subsection;
+
+    min_right = size_subsection;
+    max_right = size_subsection * 2;
+
+    console.log("min_left ", min_left, " max_left ", max_left, " min_right ", min_right, " max_right ", max_right);
+
+    for (curr_left = min_left; curr_left < max_left; curr_left++) {
+
+
+    }
+    
+    prev_size_subsection = size_subsection;
+    curr_interval++;
+
+} while (size_subsection > minimum_size_subsection);
+
+return;
+
+// ---
 
 do {
 
@@ -242,6 +288,7 @@ do {
 
             // stens TODO - just calc standard deviation across - 
 
+            /*
             audio_value = source_obj.buffer[iii];
 
             total_value = Math.abs(audio_value);
@@ -260,20 +307,24 @@ do {
                  aggregate_diff += diff_value;
                 subsection_diff += diff_value;
             }
+            */
 
             // ---
 
             offset_jump += size_subsection;
 
-            console.log(size_subsection, iii, index_sample, index_interval, audio_value);
+            // console.log(size_subsection, iii, index_sample, index_interval, audio_value);
+            console.log("inner index_interval ", index_interval, size_subsection, iii, index_sample, offset_jump);
         };
 
-        console.log("aggregate_total ", aggregate_total/curr_interval, " aggregate_diff ", aggregate_diff/curr_interval);
+        // console.log("aggregate_total ", aggregate_total/curr_interval, " aggregate_diff ", aggregate_diff/curr_interval);
+
+        console.log("outer index_sample ", index_sample);
     };
 
     var sub_points = curr_interval * size_subsection;
         
-    console.log(size_subsection, " subsection total ", subsection_total, subsection_total/sub_points, " diff ", subsection_diff, sub_points, subsection_diff/sub_points);
+    // console.log(size_subsection, " subsection total ", subsection_total, subsection_total/sub_points, " diff ", subsection_diff, sub_points, subsection_diff/sub_points);
 
     // console.log("size_chunks ", size_chunks);    
 
