@@ -88,7 +88,8 @@ var cb_read_file_done = function(audio_obj) {
 
     console.log("cb_read_file_done AAAAAbout to call detect_fundamental_frequency");
 
-    audio_utils.detect_fundamental_frequency(audio_obj, SIZE_BUFFER_SOURCE, samples_per_cycle);
+    // audio_utils.detect_fundamental_frequency(audio_obj, SIZE_BUFFER_SOURCE, samples_per_cycle);
+    audio_utils.detect_fundamental_frequency(audio_obj);
 };
 
 // ---
