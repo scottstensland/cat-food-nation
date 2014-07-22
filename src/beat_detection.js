@@ -80,28 +80,15 @@ var compare_source_with_post_write_read = function(source_obj, post_process_obj)
 var cb_read_file_done = function(audio_obj) {
 
     console.log("cb_read_file_done ");
-    console.log("cb_read_file_done ");
-    console.log("cb_read_file_done ");
-    console.log("cb_read_file_done ");
 
     shared_utils.show_object(audio_obj, 
         "backHome audio_obj 32 bit signed float   read_file_done", "total", 10);
 
-
-    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
-    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
-    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
-    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
-    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
-    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
-    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
-    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
-
-// return;
-
 	// compare_source_with_post_write_read(source_obj, wav_file_input_obj);
 
-    audio_utils.detect_fundamental_frequency(audio_obj);
+    console.log("cb_read_file_done AAAAAbout to call detect_fundamental_frequency");
+
+    audio_utils.detect_fundamental_frequency(audio_obj, SIZE_BUFFER_SOURCE, samples_per_cycle);
 };
 
 // ---
@@ -120,27 +107,14 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 // ---
 
 
-
-/*
-var some_var = 2.07;
-
-console.log(shared_utils.toFixed(some_var, 5));
-
-var some_neg_var = -2.08;
-
-console.log(shared_utils.toFixed(some_neg_var, 5));
-
-return;
-*/
-
-
 // ------------  synthesize an audio buffer  ------------  //
 
 
-// SIZE_BUFFER_SOURCE = 5;
-// SIZE_BUFFER_SOURCE = 256;
-// SIZE_BUFFER_SOURCE = 4096;
-// SIZE_BUFFER_SOURCE = 16384;
+// var SIZE_BUFFER_SOURCE = 5;
+// var SIZE_BUFFER_SOURCE = 256;
+var SIZE_BUFFER_SOURCE = 512;
+// var SIZE_BUFFER_SOURCE = 4096;
+// var SIZE_BUFFER_SOURCE = 16384;
 
 
 
@@ -152,15 +126,9 @@ return;
 
 // ---------- generates nice listenable sin tone ------------- //
 
-// SIZE_BUFFER_SOURCE = 64;
-// SIZE_BUFFER_SOURCE = 128;
-SIZE_BUFFER_SOURCE = 256;
-// SIZE_BUFFER_SOURCE = 1024;
-// SIZE_BUFFER_SOURCE = 16384;
-
 // var samples_per_cycle = 8;
-// var samples_per_cycle = 16;
-var samples_per_cycle = 17;
+var samples_per_cycle = 16;
+// var samples_per_cycle = 17;
 // var samples_per_cycle = 32;
 // var samples_per_cycle = 64;
 // var samples_per_cycle = SIZE_BUFFER_SOURCE;
@@ -174,55 +142,6 @@ var output_format = ".wav";
 console.log(" audio_file_dir ", audio_file_dir);
 
 var source_obj = {};
-
-/*
-// ----------- read wav file populate buffer ----------------  //
-
-
-// var audio_32_bit_float_from_16_bit_wav_obj = {};
-
-var raw_input_filename = "Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
-
-var wav_input_filename = path.join(audio_file_dir, raw_input_filename);
-
-console.log("wav_input_filename ", wav_input_filename);
-
-var spec = {};
-
-shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(source_obj,
-                                                            wav_input_filename, spec, cb_read_file_done);
-
-*/
-
-// return;
-
-
-/*
-// ---------- populate sin curve ------------- //
-
-// var source_obj = shared_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
-
-var max_index = 3;
-// var max_index = SIZE_BUFFER_SOURCE;
-
-for (var index = 0; index < max_index; index++) {
-
-    console.log(index, " pop_audio_buffer ", source_obj.buffer[index]);
-}
-
-return;
-
-console.log("\n\n");
-*/
-
-// ---- read wav file populate buffer ---- //
-
-
-
-
-// detect_fundamental_frequency(source_obj);
-
-
 
 
 // ------------ read wav file -------------------- //
@@ -241,7 +160,9 @@ var source_wave = "source_wave";
 var source_wave_filename = path.join(output_dir, source_wave + output_format);
 
 
-console.log("\n\nread wav file\n\n");
+console.log("\n\nread wav file  source_wave_filename ", source_wave_filename, "\n\n");
+
+// return;
 
 var wav_file_input_obj = {};  // create stub object to which we attach .buffer
 
@@ -249,9 +170,9 @@ var wav_file_input_obj = {};  // create stub object to which we attach .buffer
 var property_buffer_raw_input_file = "buffer_raw_input_file";
 var property_buffer_input_file     = "buffer_input_file";
 
-// wav_file_input_obj.filename = source_wave_filename;
+wav_file_input_obj.filename = source_wave_filename;
 
-wav_file_input_obj.filename = resolvePath("~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
+// wav_file_input_obj.filename = resolvePath("~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
 
 
 wav_file_input_obj[property_buffer_raw_input_file] = new Buffer(0);
@@ -267,88 +188,7 @@ shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
                                 spec,
                                 cb_read_file_done);
 
-
-
-
-
-
-return;
-
-/*
-
-// ---
-
-do {
-
-	console.log("count_subsection ------------ ", count_subsection);
-
-	size_subsection = ~~(SIZE_BUFFER_SOURCE / curr_interval);
-
-	console.log("SIZE_BUFFER_SOURCE ", SIZE_BUFFER_SOURCE);
-	console.log("curr_interval ", curr_interval);
-	console.log("size_subsection ", size_subsection);
-
-	// ---
-
-
-
-    var offset_jump;
-    var iii;
-    var audio_value;
-
-    var aggregate_total;
-    var aggregate_diff;
-    var subsection_total = 0;
-    var subsection_diff = 0;
-
-    var sample_value;
-    var total_value;
-    var diff_value;
-
-    for (var index_sample = 0; index_sample < size_subsection; index_sample++) {
-    // for (var index_sample = 0; index_sample < 2; index_sample++) {
-
-        offset_jump = 0;
-        aggregate_total = 0;
-        aggregate_diff = 0;
-
-        for (var index_interval = 0; index_interval < curr_interval; index_interval++) {
-
-            iii = index_sample + offset_jump;
-
-            // stens TODO - just calc standard deviation across - 
-
-
-            // ---
-
-            offset_jump += size_subsection;
-
-            // console.log(size_subsection, iii, index_sample, index_interval, audio_value);
-            console.log("inner index_interval ", index_interval, size_subsection, iii, index_sample, offset_jump);
-        };
-
-        // console.log("aggregate_total ", aggregate_total/curr_interval, " aggregate_diff ", aggregate_diff/curr_interval);
-
-        console.log("outer index_sample ", index_sample);
-    };
-
-    var sub_points = curr_interval * size_subsection;
-        
-    // console.log(size_subsection, " subsection total ", subsection_total, subsection_total/sub_points, " diff ", subsection_diff, sub_points, subsection_diff/sub_points);
-
-    // console.log("size_chunks ", size_chunks);    
-
-	// ---
-
-	curr_interval++;
-
-} while (size_subsection > minimum_size_subsection);
-
-
-// return;
-
-*/
-
+console.log("<><><>  <><><>  <><><>   end of best detection processing   <><><>  <><><>  <><><>");
 
 };
 exports.evolveit = evolveit;

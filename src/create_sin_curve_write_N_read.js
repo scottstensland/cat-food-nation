@@ -97,10 +97,12 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 
 // ---------- generates nice listenable sin tone ------------- //
 
-SIZE_BUFFER_SOURCE = 256;
-// SIZE_BUFFER_SOURCE = 16384;
+// var SIZE_BUFFER_SOURCE = 256;
+var SIZE_BUFFER_SOURCE = 2048;
+// var SIZE_BUFFER_SOURCE = 16384;
 
-var samples_per_cycle = 64;
+var samples_per_cycle = 16;
+// var samples_per_cycle = 64;
 
 
 
