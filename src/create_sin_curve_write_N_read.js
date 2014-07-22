@@ -22,23 +22,34 @@ console.log("IN evolveit");
 var shared_utils;
 var genome_module;
 
+var audio_util_obj;
+var audio_utils;
+
+
 switch (environment_mode) {
 
     case "nubia": // repository owner tinkering mode - ignore it and use nothing which defaults to dev which is OK
         shared_utils  = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils"));
         genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
+        audio_util_obj = require(resolvePath("~/Dropbox/Documents/code/github/audio-utils/src/audio_utils"));
         break;
 
     case "dev":
         shared_utils  = require("shared-utils");
         genome_module = require("node-genome");
+        audio_util_obj = require("audio-utils");    // get these modules from global install
         break;
 
     default :
         shared_utils  = require("shared-utils");
         genome_module = require("node-genome");
+        audio_util_obj = require("audio-utils");    // get these modules from global install
         break;
 };
+
+audio_utils = audio_util_obj.audio_utils(environment_mode);
+
+console.log("audio_utils ", audio_utils);
 
 // ---
 
@@ -108,7 +119,7 @@ console.log(" output_dir ", output_dir);
 
 var source_obj = {};
 
-var source_obj = shared_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
+var source_obj = audio_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
 
 var max_index = 3;
 // var max_index = SIZE_BUFFER_SOURCE;

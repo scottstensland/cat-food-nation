@@ -130,8 +130,8 @@ return;
 
 // test_write_wav.evolveit(environment_mode);
 // iterate_mutate_judge.evolveit(environment_mode);
-// create_sin_curve_write_N_read.evolveit(environment_mode);
-beat_detection.evolveit(environment_mode);
+create_sin_curve_write_N_read.evolveit(environment_mode);
+// beat_detection.evolveit(environment_mode);
 
 
 

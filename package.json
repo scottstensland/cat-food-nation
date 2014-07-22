@@ -1,6 +1,6 @@
 {
   "name": "cat-food-nation",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "cat-food-nation ===============",
   "main": "src/cat_food_nation.js",
   "directories": {
@@ -31,8 +31,6 @@
       "url": "http://www.wtfpl.net"
     }
   ],
-
-
   "bugs": {
     "url": "https://github.com/scottstensland/cat-food-nation/issues"
   },

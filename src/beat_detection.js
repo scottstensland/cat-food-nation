@@ -78,6 +78,22 @@ var cb_read_file_done = function(audio_obj) {
         "backHome audio_obj 32 bit signed float   read_file_done", "total", 10);
 
 
+    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
+    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
+    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
+    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
+    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
+    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
+    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
+    console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
+
+
+
+// return;
+
+    shared_utils.detect_fundamental_frequency(audio_obj);
+
+
 	// compare_source_with_post_write_read(source_obj, wav_file_input_obj);
 };
 
@@ -152,7 +168,7 @@ console.log(" audio_file_dir ", audio_file_dir);
 
 var source_obj = {};
 
-
+/*
 // ----------- read wav file populate buffer ----------------  //
 
 
@@ -169,12 +185,12 @@ var spec = {};
 shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(source_obj,
                                                             wav_input_filename, spec, cb_read_file_done);
 
-
+*/
 
 // return;
 
 
-
+/*
 // ---------- populate sin curve ------------- //
 
 // var source_obj = shared_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
@@ -190,152 +206,68 @@ for (var index = 0; index < max_index; index++) {
 return;
 
 console.log("\n\n");
-
+*/
 
 // ---- read wav file populate buffer ---- //
 
 
 
-var detect_fundamental_frequency = function(audio_obj) {
 
-// --- iterate across to identify dominate frequency --- //
-
-var minimum_size_subsection = 10;
-// var minimum_size_subsection = 25;
-
-var curr_interval = 2;	// take entire input buffer and divide by this looking for similarities between such subsections
-
-var size_subsection;
-
-var count_subsection = 0;
-
-var size_chunks;
-var curr_chunk;
-var curr_start;
-var curr_end;
-var curr_sample_left;
-var curr_sample_right;
-
-// var curr_sample_space;
-
-var curr_left;
-// var min_left;
-// var max_left;
-
-var curr_right;
-// var min_right;
-// var max_right;
-
-var prev_size_subsection = 0;
-
-var max_samples_per_subsection = 30;
-var size_increment;
-var reconstituted_size_subsection;
-// var max_size_subsample_to_do_increment_fixup = 30;
-var max_size_subsample_to_do_increment_fixup = max_samples_per_subsection;
-
-// ---
-
-var aggregate_total;
-var aggregate_diff;
-var subsection_total;
-var subsection_diff;
-var count_num_iterations;
-
-do {
-
-    size_subsection = ~~(SIZE_BUFFER_SOURCE / curr_interval);
-
-    if (size_subsection == prev_size_subsection) {
-
-        curr_interval++;
-        continue;
-    }
-
-    if (size_subsection < max_size_subsample_to_do_increment_fixup) {        
-
-        size_increment = 1;
-
-        reconstituted_size_subsection = size_subsection;
-
-    } else {
-
-        size_increment = ~~(size_subsection / max_samples_per_subsection);
-
-        reconstituted_size_subsection = size_increment * max_samples_per_subsection;
-    };
-
-    // stens TODO - we may want to compare more than ONE pair ... make it a parm to compare X cycles
-
-
-    // console.log("size_subsection ", size_subsection, " curr_interval ", curr_interval, 
-    //             " size_increment ", size_increment, reconstituted_size_subsection);
-
-    // min_left = 0;
-    // max_left = size_subsection;
-
-    // min_right = size_subsection;
-    // max_right = size_subsection * 2;
-
-    // console.log("min_left ", min_left, " max_left ", max_left, " min_right ", min_right, " max_right ", max_right);
-
-
-    subsection_total = 0;
-    subsection_diff = 0;
-    count_num_iterations = 0;
-
-    for (curr_left = 0; curr_left < reconstituted_size_subsection; curr_left += size_increment) {
-
-        curr_right = curr_left + size_subsection;
-
-        curr_sample_left = audio_obj.buffer[curr_left];
-        curr_sample_right = audio_obj.buffer[curr_right];
-
-        subsection_total += curr_sample_right;
-        subsection_diff  += Math.abs(curr_sample_left - curr_sample_right);
-        count_num_iterations++;
-
-        // console.log("User %s has %d points", userName, userPoints);
-
-        // console.log(reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
-
-        // console.log("aaa %d %d %f %d %f", reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
-        // process.stdout.write('aaa %d %d %f %d %f\n', reconstituted_size_subsection, curr_left, curr_sample_left, curr_right, curr_sample_right);
-        console.log("" + shared_utils.toFixed(reconstituted_size_subsection, 5),
-                    // curr_left, curr_sample_left.toFixed(5), 
-                    // curr_right, curr_sample_right.toFixed(5), " vs mine ",
-                    shared_utils.toFixed(curr_left, 5), shared_utils.toFixed(curr_sample_left, 5), 
-                    shared_utils.toFixed(curr_right, 5), shared_utils.toFixed(curr_sample_right, 5)
-                    );
-    };
-
-    // console.log("" + size_subsection, samples_per_cycle, count_num_iterations,
-    //          " subsection_diff ", subsection_diff/count_num_iterations);
-
-
-    console.log("" + shared_utils.toFixed(size_subsection, 5),
-        shared_utils.toFixed(samples_per_cycle, 5),
-        shared_utils.toFixed(count_num_iterations, 5),
-             " subsection_diff ", 
-              shared_utils.toFixed(subsection_diff/count_num_iterations, 5)
-             );
+// detect_fundamental_frequency(source_obj);
 
 
 
-    // ---
-    
-    prev_size_subsection = size_subsection;
-    curr_interval++;
 
-} while (size_subsection > minimum_size_subsection);
+// ------------ read wav file -------------------- //
 
-};
-exports.detect_fundamental_frequency = detect_fundamental_frequency;
 
-detect_fundamental_frequency(source_obj);
+var output_dir = resolvePath("~/Dropbox/Documents/data/audio/");
+
+var output_format = ".wav";
+
+console.log(" output_dir ", output_dir);
+
+
+
+var source_wave = "source_wave";
+
+var source_wave_filename = path.join(output_dir, source_wave + output_format);
+
+
+console.log("\n\nread wav file\n\n");
+
+var wav_file_input_obj = {};  // create stub object to which we attach .buffer
+
+
+var property_buffer_raw_input_file = "buffer_raw_input_file";
+var property_buffer_input_file     = "buffer_input_file";
+
+// wav_file_input_obj.filename = source_wave_filename;
+
+wav_file_input_obj.filename = resolvePath("~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
+
+
+wav_file_input_obj[property_buffer_raw_input_file] = new Buffer(0);
+
+
+console.log("abouttttt to read wav_file_input_obj.filename ", wav_file_input_obj.filename);
+
+var spec = {};
+
+shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
+                                wav_file_input_obj,
+                                wav_file_input_obj.filename, 
+                                spec,
+                                cb_read_file_done);
+
+
+
+
 
 
 return;
+
+/*
 
 // ---
 
@@ -351,52 +283,7 @@ do {
 
 	// ---
 
-    /*
-	var array_start_end = [];
 
-	var aggregate_index = 0;
-
-	for (var index = 0; index < curr_interval; index++) {
-
-		var this_section = {};
-
-		this_section.index_start = aggregate_index;
-		this_section.index_end   = aggregate_index + size_subsection;
-
-		array_start_end.push(this_section);
-
-		// ---
-
-		aggregate_index += size_subsection;
-	}
-
-	console.log("array_start_end ", array_start_end);
-
-    // ---
-
-    size_chunks = array_start_end.length;
-    */
-
-
-    /*
-    for (var curr_chunk_index = 0; curr_chunk_index < size_chunks; curr_chunk_index++) {
-
-        curr_chunk = array_start_end[curr_chunk_index];
-
-        curr_start = curr_chunk.index_start;
-        curr_end   = curr_chunk.index_end;
-
-        console.log(curr_chunk_index, " curr_chunk ", curr_chunk, curr_start, curr_end);
-
-        for (var index_sample = curr_start; index_sample < curr_end; index_sample++) {
-
-            curr_sample = source_obj.buffer[index_sample];
-
-            console.log(index_sample, " curr_sample ", curr_sample);
-        }
-    }
-    */
-    
 
     var offset_jump;
     var iii;
@@ -424,26 +311,6 @@ do {
 
             // stens TODO - just calc standard deviation across - 
 
-            /*
-            audio_value = source_obj.buffer[iii];
-
-            total_value = Math.abs(audio_value);
-
-             aggregate_total += total_value;
-            subsection_total += total_value;
-
-            if (index_interval == 0) {
-
-                sample_value = audio_value;
-
-            } else {
-
-                diff_value = Math.abs(sample_value - audio_value);
-
-                 aggregate_diff += diff_value;
-                subsection_diff += diff_value;
-            }
-            */
 
             // ---
 
@@ -473,52 +340,7 @@ do {
 
 // return;
 
-// ---------- write to output file ------------- //
-
-
-var source_wave = "source_wave";
-
-var source_wave_filename = path.join(audio_file_dir, source_wave + output_format);
-
-
-console.log("source_wave_filename   ", source_wave_filename);
-
-shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(source_obj, source_wave_filename);
-
-console.log("source_wave_filename   ", source_wave_filename);
-
-return;
-
-
-// ------------ read wav file -------------------- //
-
-
-
-console.log("\n\nread wav file\n\n");
-
-var wav_file_input_obj = {};  // create stub object to which we attach .buffer
-
-
-var property_buffer_raw_input_file = "buffer_raw_input_file";
-var property_buffer_input_file     = "buffer_input_file";
-
-wav_file_input_obj.filename = source_wave_filename;
-
-
-wav_file_input_obj[property_buffer_raw_input_file] = new Buffer(0);
-
-
-console.log("abouttttt to read wav_file_input_obj.filename ", wav_file_input_obj.filename);
-
-var spec = {};
-
-shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
-								wav_file_input_obj,
-								wav_file_input_obj.filename, 
-                                spec,
-                                cb_read_file_done);
-
-
+*/
 
 
 };
