@@ -21,6 +21,9 @@ console.log("IN evolveit");
 var shared_utils;
 var genome_module;
 
+var audio_util_obj;
+var audio_utils;
+
 switch (environment_mode) {
 
     case "nubia": // repository owner tinkering mode - ignore it and use nothing which defaults to dev which is OK
@@ -28,22 +31,29 @@ switch (environment_mode) {
         console.log("environment_mode is ", environment_mode, " so pulling in sibling dir source code");
         shared_utils  = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils"));
         genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
+        audio_util_obj = require(resolvePath("~/Dropbox/Documents/code/github/audio-utils/src/audio_utils"));
         break;
 
     case "dev":
         console.log("environment_mode is ", environment_mode, " so using locally installed npm module");
         shared_utils  = require("shared-utils");
         genome_module = require("node-genome");
+        audio_util_obj = require("audio-utils");    // get these modules from global install
         break;
 
     default :
         console.log("environment_mode is ", environment_mode, " so using locally installed npm module");
         shared_utils  = require("shared-utils");
         genome_module = require("node-genome");
+        audio_util_obj = require("audio-utils");    // get these modules from global install
         break;
 };
 
 console.log(shared_utils);
+
+audio_utils = audio_util_obj.audio_utils(environment_mode);
+
+console.log("audio_utils ", audio_utils);
 
 // ---
 
@@ -87,14 +97,11 @@ var cb_read_file_done = function(audio_obj) {
     console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
     console.log("CFN bt ... cb_read_file_done about to call detect_fundamental_frequency");
 
-
-
 // return;
 
-    shared_utils.detect_fundamental_frequency(audio_obj);
-
-
 	// compare_source_with_post_write_read(source_obj, wav_file_input_obj);
+
+    audio_utils.detect_fundamental_frequency(audio_obj);
 };
 
 // ---

@@ -1,5 +1,4 @@
 
-
 (function(exports) {
 
 // ---------------------------------------------------------------- //
@@ -24,7 +23,6 @@ var genome_module;
 
 var audio_util_obj;
 var audio_utils;
-
 
 switch (environment_mode) {
 
