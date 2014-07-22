@@ -174,10 +174,10 @@ shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(source_obj,
 // return;
 
 
-/*
+
 // ---------- populate sin curve ------------- //
 
-var source_obj = shared_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
+// var source_obj = shared_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
 
 var max_index = 3;
 // var max_index = SIZE_BUFFER_SOURCE;
@@ -187,11 +187,10 @@ for (var index = 0; index < max_index; index++) {
     console.log(index, " pop_audio_buffer ", source_obj.buffer[index]);
 }
 
-// return;
+return;
 
 console.log("\n\n");
 
-*/
 
 // ---- read wav file populate buffer ---- //
 
