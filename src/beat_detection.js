@@ -58,8 +58,19 @@ console.log("audio_utils ", audio_utils);
 // ---
 
 var fs = require('fs');
-
 var util = require('util');
+
+var subsection_mode = "decimation"; // keep dividing buffer size by incrementing counter
+var subsection_mode = "continuous"; // continuously slide left/right center point closer to start
+
+var spec_to_from_freq_detector = {
+
+    // min_error_thresold : 0.2
+    min_error_thresold : 0.0,
+    minimum_size_subsection : 6,
+    max_samples_per_subsection : 9999999,
+    subsection_mode : subsection_mode
+};
 
 // ------------------------------------- //
 
@@ -74,22 +85,27 @@ var compare_source_with_post_write_read = function(source_obj, post_process_obj)
 
 	console.log(  "___________ pre N post writeNread  diff_spec   ", diff_spec,
 				"\n___________ pre N post writeNread  diff_spec");
-
-}
+};
 
 var cb_read_file_done = function(audio_obj) {
 
     console.log("cb_read_file_done ");
 
     shared_utils.show_object(audio_obj, 
-        "backHome audio_obj 32 bit signed float   read_file_done", "total", 10);
+        "backHome cb_read_file_done ", "total", 0);
 
 	// compare_source_with_post_write_read(source_obj, wav_file_input_obj);
 
     console.log("cb_read_file_done AAAAAbout to call detect_fundamental_frequency");
 
     // audio_utils.detect_fundamental_frequency(audio_obj, SIZE_BUFFER_SOURCE, samples_per_cycle);
-    audio_utils.detect_fundamental_frequency(audio_obj);
+    // audio_utils.detect_fundamental_frequency(audio_obj, spec_answer_back);
+    audio_utils.play_detect_frequency(audio_obj, spec_to_from_freq_detector);
+
+    var all_low_error_sample_sizes = spec_to_from_freq_detector.all_low_error_sample_sizes;
+
+    console.log("spec_to_from_freq_detector ", spec_to_from_freq_detector);
+    console.log("all_low_error_sample_sizes ", all_low_error_sample_sizes);
 };
 
 // ---
@@ -105,81 +121,26 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
         "backHome audio_obj 32 bit signed float    write_file_done ", "total", 10);
 };
 
-// ---
-
-
-// ------------  synthesize an audio buffer  ------------  //
-
-
-// var SIZE_BUFFER_SOURCE = 5;
-// var SIZE_BUFFER_SOURCE = 256;
-var SIZE_BUFFER_SOURCE = 512;
-// var SIZE_BUFFER_SOURCE = 4096;
-// var SIZE_BUFFER_SOURCE = 16384;
-
-
-
-// var samples_per_cycle = 5;
-// var samples_per_cycle = 64;
-// var samples_per_cycle = 256;
-// var samples_per_cycle = SIZE_BUFFER_SOURCE;
-
-
-// ---------- generates nice listenable sin tone ------------- //
-
-// var samples_per_cycle = 8;
-var samples_per_cycle = 16;
-// var samples_per_cycle = 17;
-// var samples_per_cycle = 32;
-// var samples_per_cycle = 64;
-// var samples_per_cycle = SIZE_BUFFER_SOURCE;
-// var samples_per_cycle = 256;
-
-
-var audio_file_dir = resolvePath("~/Dropbox/Documents/data/audio/");
-
-var output_format = ".wav";
-
-console.log(" audio_file_dir ", audio_file_dir);
-
-var source_obj = {};
-
-
 // ------------ read wav file -------------------- //
-
-
-var output_dir = resolvePath("~/Dropbox/Documents/data/audio/");
-
-var output_format = ".wav";
-
-console.log(" output_dir ", output_dir);
-
-
-
-var source_wave = "source_wave";
-
-var source_wave_filename = path.join(output_dir, source_wave + output_format);
-
-
-console.log("\n\nread wav file  source_wave_filename ", source_wave_filename, "\n\n");
-
-// return;
 
 var wav_file_input_obj = {};  // create stub object to which we attach .buffer
 
 
 var property_buffer_raw_input_file = "buffer_raw_input_file";
-var property_buffer_input_file     = "buffer_input_file";
+// var property_buffer_input_file     = "buffer_input_file";
 
-wav_file_input_obj.filename = source_wave_filename;
+// var input_audiofile = "~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+// var input_audiofile = "~/Dropbox/Documents/data/audio/Contrabass_Saxophone_mono__excerpt_audible_hXBeu7o9uUM.wav";
+var input_audiofile = "~/Dropbox/Documents/data/audio/source_wave_256_8.wav";
 
-// wav_file_input_obj.filename = resolvePath("~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
 
+console.log("read input_audiofile ", input_audiofile);
+
+// ---
+
+wav_file_input_obj.filename = resolvePath(input_audiofile);
 
 wav_file_input_obj[property_buffer_raw_input_file] = new Buffer(0);
-
-
-console.log("abouttttt to read wav_file_input_obj.filename ", wav_file_input_obj.filename);
 
 var spec = {};
 
@@ -187,7 +148,7 @@ shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
                                 wav_file_input_obj,
                                 wav_file_input_obj.filename, 
                                 spec,
-                                cb_read_file_done);
+                                cb_read_file_done); // <--- followup processing happens in THIS callback
 
 console.log("<><><>  <><><>  <><><>   end of best detection processing   <><><>  <><><>  <><><>");
 

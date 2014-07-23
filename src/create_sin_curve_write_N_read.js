@@ -63,7 +63,11 @@ var cb_read_file_done = function(audio_obj) {
     console.log("cb_read_file_done ");
 
     shared_utils.show_object(audio_obj, 
-        "backHome audio_obj 32 bit signed float   read_file_done", "total", 0);
+        "backHome audio_obj 32 bit signed float   read_file_done", "total", 10);
+
+    console.log("source_wave_filename   ", source_wave_filename);
+    console.log("source_wave_filename   ", source_wave_filename);
+    console.log("source_wave_filename   ", source_wave_filename);
 };
 
 // ---
@@ -97,13 +101,14 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 
 // ---------- generates nice listenable sin tone ------------- //
 
-// var SIZE_BUFFER_SOURCE = 256;
+var SIZE_BUFFER_SOURCE = 256;
 // var SIZE_BUFFER_SOURCE = 2048;
-var SIZE_BUFFER_SOURCE = 16384;
+// var SIZE_BUFFER_SOURCE = 16384;
 // var SIZE_BUFFER_SOURCE = 1048576;
 
+var samples_per_cycle = 8;
 // var samples_per_cycle = 16;
-var samples_per_cycle = 32;
+// var samples_per_cycle = 32;
 // var samples_per_cycle = 64;
 
 
@@ -122,6 +127,7 @@ console.log(" output_dir ", output_dir);
 var source_obj = {};
 
 var source_obj = audio_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
+// var source_obj = audio_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE);
 
 var max_index = 3;
 // var max_index = SIZE_BUFFER_SOURCE;
@@ -137,7 +143,9 @@ for (var index = 0; index < max_index; index++) {
 
 var source_wave = "source_wave";
 
-var source_wave_filename = path.join(output_dir, source_wave + output_format);
+// var source_wave_filename = path.join(output_dir, source_wave + output_format);
+var source_wave_filename = path.join(output_dir, source_wave + "_" +
+                                    SIZE_BUFFER_SOURCE + "_" + samples_per_cycle + output_format);
 
 
 console.log("source_wave_filename   ", source_wave_filename);
@@ -176,8 +184,6 @@ shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
 								wav_file_input_obj.filename, 
                                 spec,
                                 cb_read_file_done);
-
-
 
 
 };
