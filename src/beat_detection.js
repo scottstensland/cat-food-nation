@@ -61,12 +61,12 @@ var fs = require('fs');
 var util = require('util');
 
 var subsection_mode = "decimation"; // keep dividing buffer size by incrementing counter
-var subsection_mode = "continuous"; // continuously slide left/right center point closer to start
+// var subsection_mode = "continuous"; // continuously slide left/right center point closer to start
 
 var spec_to_from_freq_detector = {
 
     // min_error_thresold : 0.2
-    min_error_thresold : 0.0,
+    min_error_thresold : 0.015,
     minimum_size_subsection : 6,
     max_samples_per_subsection : 9999999,
     subsection_mode : subsection_mode
@@ -130,8 +130,8 @@ var property_buffer_raw_input_file = "buffer_raw_input_file";
 // var property_buffer_input_file     = "buffer_input_file";
 
 // var input_audiofile = "~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
-// var input_audiofile = "~/Dropbox/Documents/data/audio/Contrabass_Saxophone_mono__excerpt_audible_hXBeu7o9uUM.wav";
-var input_audiofile = "~/Dropbox/Documents/data/audio/source_wave_256_8.wav";
+var input_audiofile = "~/Dropbox/Documents/data/audio/Contrabass_Saxophone_mono__excerpt_audible_hXBeu7o9uUM.wav";
+// var input_audiofile = "~/Dropbox/Documents/data/audio/source_wave_256_8.wav";
 
 
 console.log("read input_audiofile ", input_audiofile);
