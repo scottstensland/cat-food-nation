@@ -27,9 +27,20 @@ var audio_utils;
 switch (environment_mode) {
 
     case "nubia": // repository owner tinkering mode - ignore it and use nothing which defaults to dev which is OK
-        shared_utils  = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils"));
-        genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
-        audio_util_obj = require(resolvePath("~/Dropbox/Documents/code/github/audio-utils/src/audio_utils"));
+
+        var local_github_parent = process.env.GITHUB_REPO_PARENT;
+
+        if ( ! local_github_parent ) {
+
+            console.error("ERROR - do not use environment_mode value of :", environment_mode, 
+                            " instead use dev or leave blank");
+            process.exit(8);
+        }
+
+        console.log("environment_mode is ", environment_mode, " so pulling in sibling dir source code");
+        shared_utils   = require(resolvePath(local_github_parent + "shared-utils/src/node_utils"));
+        genome_module  = require(resolvePath(local_github_parent + "node-genome/src/genome"));
+        audio_util_obj = require(resolvePath(local_github_parent + "audio-utils/src/audio_utils"));
         break;
 
     case "dev":
@@ -47,9 +58,7 @@ switch (environment_mode) {
 
 // ---
 
-
 audio_utils = audio_util_obj.audio_utils(environment_mode);
-
 console.log("audio_utils ", audio_utils);
 
 var fs = require('fs');
@@ -75,18 +84,6 @@ var cb_read_file_done = function(audio_obj) {
 
     // shared_utils.show_object(audio_obj, 
     //     "backHome iterate_mutate_judge 32 read_file_done", "total", 0);
-};
-
-// ---
-
-var cb_write_file_done = function(audio_obj, cb_post_write) {
-
-    console.log("cb_write_file_done ");
-    console.log("cb_write_file_done ");
-    console.log("cb_write_file_done ");
-
-    shared_utils.show_object(audio_obj, 
-        "backHome audio_obj 32 bit signed float    write_file_done ", "total", 10);
 };
 
 // ------------------------------------- //
@@ -178,7 +175,11 @@ for (var index = 0; index < max_index; index++) {
 // var source_wave_filename = "/tmp/source_wave.wav";
 var source_wave = "source_wave";
 
-var source_wave_filename = path.join(output_dir, source_wave + output_format);
+// var source_wave_filename = path.join(output_dir, source_wave + output_format);
+var source_wave_filename = path.join(output_dir, source_wave + "_" +
+									SIZE_BUFFER_SOURCE + "_" +
+									samples_per_cycle + "_" +
+									output_format);
 
 
 console.log("source_wave_filename   ", source_wave_filename);
@@ -303,9 +304,11 @@ var seed_genome = {
 		console.log("doing it sloppy");
 
 		// max_acceptible_diff_per_point = 0.01;
-		max_acceptible_diff_per_point = 0.1;
+		// max_acceptible_diff_per_point = 0.1;
+		max_acceptible_diff_per_point = 0.3;
 
-		max_attempts_per_point = 30;
+		max_attempts_per_point = 10;
+		// max_attempts_per_point = 30;
 		// max_attempts_per_point = 300;
 
 	} else if (desired_aphorism === aphorism_strict) {
@@ -321,41 +324,36 @@ var seed_genome = {
 		process.exit(8);
 	}
 
-
-
-
+	// ---
 
 	var curr_gene_to_evolve = 0;
 
-	var size_buffer_this_gene = genome.get_size_buffer_this_gene(curr_gene_to_evolve);
-	// var size_buffer_this_gene = 2;
+	var curr_attempt;
+	var min_diff_witnessed_so_var;
 
-	// var curr_buffer_index_to_mutate = 1;
+	var putative_new_value_float;
+	var curr_best_new_value;
+	var curr_diff;
+
+	var size_buffer_this_gene = genome.get_size_buffer_this_gene(curr_gene_to_evolve);
 
 	for (var curr_buffer_index_to_mutate = 0; 
 			 curr_buffer_index_to_mutate < size_buffer_this_gene;
 			 curr_buffer_index_to_mutate++) {
 
-		// console.log(curr_buffer_index_to_mutate, " curr_buffer_index_to_mutate _____________");
-
 		var curr_value_buffer_prior = genome.get_value_node_buffer(curr_gene_to_evolve,
 																		 curr_buffer_index_to_mutate);
 
-		// console.log("PPRREEEE curr_value_buffer_prior   ", curr_value_buffer_prior);
-
 		var curr_value_buffer_source = source_obj.buffer[curr_buffer_index_to_mutate];
-
-		// console.log("curr_value_buffer_source   ", curr_value_buffer_source);
 
 		// ---
 
-		var curr_attempt = 0;
-		var min_diff_witnessed_so_var = 9999.99;
-		var putative_new_value_float = curr_value_buffer_prior;
-		var curr_best_new_value = curr_value_buffer_prior;
-		var curr_diff = Math.abs(putative_new_value_float - curr_value_buffer_source);
+		curr_attempt = 0;
+		min_diff_witnessed_so_var = 9999.99;
 
-		// console.log(curr_buffer_index_to_mutate, " PRE evolve curr_diff ", curr_diff);
+		putative_new_value_float = curr_value_buffer_prior;
+		curr_best_new_value = curr_value_buffer_prior;
+		curr_diff = Math.abs(putative_new_value_float - curr_value_buffer_source);
 
 		while (curr_diff > max_acceptible_diff_per_point &&
 			curr_attempt < max_attempts_per_point) {
@@ -370,19 +368,8 @@ var seed_genome = {
 				curr_best_new_value = putative_new_value_float;
 			};
 
-			// console.log(curr_attempt, min_diff_witnessed_so_var, 
-			// 			" putative_new_value_float   ", putative_new_value_float);
-
 			curr_attempt++;
 		};
-
-		// console.log(curr_buffer_index_to_mutate, " attempts ", curr_attempt,
-		// 			" min_diff ", 
-		// 			  min_diff_witnessed_so_var,
-		// 			  " best new ", curr_best_new_value);
-
-		// console.log(curr_buffer_index_to_mutate, "KLKLKLKLKLKL PRE get_value_node_buffer ",
-		// 				genome.get_value_node_buffer(curr_gene_to_evolve, curr_buffer_index_to_mutate))
 
 		genome.set_value_node_buffer(curr_gene_to_evolve, curr_buffer_index_to_mutate, curr_best_new_value);
 	};
@@ -409,7 +396,11 @@ var seed_genome = {
 // --- save into WAV file --- //
 
 var genome_synth_evolved = "genome_synth_evolved";
-var genome_synth_evolved_filename = path.join(output_dir, genome_synth_evolved + "_" + desired_aphorism + output_format);
+var genome_synth_evolved_filename = path.join(output_dir, genome_synth_evolved + "_" + 
+												desired_aphorism + "_" +
+												max_acceptible_diff_per_point + "_" +
+												max_attempts_per_point + "_" +
+												output_format);
 
 shared_utils.show_object(audio_genome_synth_evolved_obj, " POST after reading file ", "total", 10);
 

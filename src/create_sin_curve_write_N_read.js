@@ -27,9 +27,20 @@ var audio_utils;
 switch (environment_mode) {
 
     case "nubia": // repository owner tinkering mode - ignore it and use nothing which defaults to dev which is OK
-        shared_utils  = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils"));
-        genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
-        audio_util_obj = require(resolvePath("~/Dropbox/Documents/code/github/audio-utils/src/audio_utils"));
+
+        var local_github_parent = process.env.GITHUB_REPO_PARENT;
+
+        if ( ! local_github_parent ) {
+
+            console.error("ERROR - do not use environment_mode value of :", environment_mode, 
+                            " instead use dev or leave blank");
+            process.exit(8);
+        }
+
+        console.log("environment_mode is ", environment_mode, " so pulling in sibling dir source code");
+        shared_utils   = require(resolvePath(local_github_parent + "shared-utils/src/node_utils"));
+        genome_module  = require(resolvePath(local_github_parent + "node-genome/src/genome"));
+        audio_util_obj = require(resolvePath(local_github_parent + "audio-utils/src/audio_utils"));
         break;
 
     case "dev":
