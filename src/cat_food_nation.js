@@ -130,9 +130,9 @@ return;
 
 // test_write_wav.evolveit(environment_mode);
 // synth_write_read.evolveit(environment_mode);
-iterate_mutate_judge.evolveit(environment_mode);
+// iterate_mutate_judge.evolveit(environment_mode);
 // create_sin_curve_write_N_read.evolveit(environment_mode); // does nice synth N write N read wav format file
-// beat_detection.evolveit(environment_mode);
+beat_detection.evolveit(environment_mode);
 
 
 // ------------------------------------------------------------- //

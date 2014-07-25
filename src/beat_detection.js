@@ -134,13 +134,11 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 
 var wav_file_input_obj = {};  // create stub object to which we attach .buffer
 
-
 var property_buffer_raw_input_file = "buffer_raw_input_file";
-// var property_buffer_input_file     = "buffer_input_file";
 
-// var input_audiofile = "~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
-var input_audiofile = "~/Dropbox/Documents/data/audio/Contrabass_Saxophone_mono__excerpt_audible_hXBeu7o9uUM.wav";
-// var input_audiofile = "~/Dropbox/Documents/data/audio/source_wave_256_8.wav";
+var audio_dir = resolvePath(process.env.AUDIO_DIR || process.env.HOME);
+
+var input_audiofile = resolvePath(audio_dir + "/Contrabass_Saxophone_mono__excerpt_audible_hXBeu7o9uUM.wav");
 
 
 console.log("read input_audiofile ", input_audiofile);

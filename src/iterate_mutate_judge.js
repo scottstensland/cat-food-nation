@@ -82,27 +82,14 @@ var cb_read_file_done = function(audio_obj) {
     console.log("cb_read_file_done ");
     console.log("cb_read_file_done ");
 
-<<<<<<< HEAD
-    // shared_utils.show_object(audio_obj, 
-    //     "backHome iterate_mutate_judge 32 read_file_done", "total", 0);
-=======
     shared_utils.show_object(audio_obj, 
         "backHome iterate_mutate_judge 32 read_file_done", "total", 20);
->>>>>>> 850383f190e395f56a58850ec009b92b4d316c54
 };
 
 // ------------------------------------- //
 
-
-
-	// var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
-
 	console.log("here is shared_utils ", shared_utils);
 
-	// var genome_module = require('node-genome');
-	// var genome_module = require('../src/genome');
-	// var genome_module = require("~/Dropbox/Documents/code/github/node-genome/src/genome");
-	// var genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
 	var genome = genome_module.init({ name : "Corinde Wiers"});
 
 	genome.set_random_seed(117); // uncomment to see repeated random sequence
@@ -150,8 +137,8 @@ var samples_per_cycle = SIZE_BUFFER_SOURCE;
 
 
 
+var output_dir = resolvePath(process.env.AUDIO_DIR || process.env.HOME);
 
-var output_dir = resolvePath("~/Dropbox/Documents/data/audio/");
 
 var output_format = ".wav";
 

@@ -267,15 +267,6 @@ function read_wav_file() {
 
     console.log("read_wav_file");
 
-    // var input_file = resolvePath("~/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
-    // var input_file = resolvePath("../data/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav");
-    // var input_file = resolvePath("~/Dropbox/Documents/data/audio/Justice_Genesis_first_30_seconds.wav");
-    // var input_file = resolvePath("~/Dropbox/Documents/data/audio/Die_Antwoord_11_doong_doong_minute_sec.wav");
-    // var input_file = resolvePath("~/Dropbox/Documents/data/audio/Lee_Smolin_Physics_Envy_and_Economic_Theory_cWn86ESze6M_mono.wav");
-
-    // var input_file = resolvePath("~/Videos/Google_I_O_2014_-wtLJPvx7-ys.wav");
-
-
     var input_file = resolvePath("../data/started_32_bit_float_now_back_to_16_bit_signed.wav");
 
 
@@ -315,38 +306,16 @@ var cb_read_file_done = function(audio_obj) {
 
 // ---------------------------------------------------------------- //
 
-	// var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
+var genome = genome_module.init({ name : "Corinde Wiers"});
 
-	// console.log("here is shared_utils ", shared_utils);
-
-/*
-    // console.log("ABOUT to call test_write_32_bit_float_into_file ");
-    // test_write_32_bit_float_into_file();
-
-    console.log("ABOUT to call test_write_16_bit_int_into_file ");
-
-    test_write_16_bit_int_into_file();
+genome.set_random_seed(117); // uncomment to see repeated random sequence
 
 
-    return;
+var aphorism_sloppy = "sloppy";
+var aphorism_strict = "strict";
 
-    // process.exit(8);
-*/
-
-	// var genome_module = require('node-genome');
-	// var genome_module = require('../src/genome');
-	// var genome_module = require("~/Dropbox/Documents/code/github/node-genome/src/genome");
-	// var genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
-	var genome = genome_module.init({ name : "Corinde Wiers"});
-
-	genome.set_random_seed(117); // uncomment to see repeated random sequence
-
-
-	var aphorism_sloppy = "sloppy";
-	var aphorism_strict = "strict";
-
-	// var desired_aphorism = aphorism_sloppy;
-	var desired_aphorism = aphorism_strict;
+// var desired_aphorism = aphorism_sloppy;
+var desired_aphorism = aphorism_strict;
 
 
 
@@ -366,10 +335,6 @@ SIZE_BUFFER_SOURCE = 256;
 // SIZE_BUFFER_SOURCE = 1048576;
 
 
-
-
-
-
 // var samples_per_cycle = 4;
 // var samples_per_cycle = 8;
 // var samples_per_cycle = 32;
@@ -379,17 +344,9 @@ var samples_per_cycle = 64;
 // var samples_per_cycle = 128;
 // var samples_per_cycle = 1024;
 
-
-
-
-// test_write_32_bit_float_to_16_bit_signed_ints_to_file();
-
-// return;
-
 // ---
 
-
-var output_dir = resolvePath("~/Dropbox/Documents/data/audio/");
+var output_dir = resolvePath(process.env.AUDIO_DIR || process.env.HOME);
 
 var output_format = ".wav";
 

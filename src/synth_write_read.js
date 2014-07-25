@@ -221,38 +221,18 @@ function test_write_16_bit_int_into_file() {
 
 // ---------------------------------------------------------------- //
 
-	// var shared_utils = require(resolvePath("~/Dropbox/Documents/code/github/shared-utils/src/node_utils.js"));
+console.log("here is shared_utils ", shared_utils);
 
-	console.log("here is shared_utils ", shared_utils);
+var genome = genome_module.init({ name : "Corinde Wiers"});
 
-/*
-    // console.log("ABOUT to call test_write_32_bit_float_into_file ");
-    // test_write_32_bit_float_into_file();
-
-    console.log("ABOUT to call test_write_16_bit_int_into_file ");
-
-    test_write_16_bit_int_into_file();
+genome.set_random_seed(117); // uncomment to see repeated random sequence
 
 
-    return;
+var aphorism_sloppy = "sloppy";
+var aphorism_strict = "strict";
 
-    // process.exit(8);
-*/
-
-	// var genome_module = require('node-genome');
-	// var genome_module = require('../src/genome');
-	// var genome_module = require("~/Dropbox/Documents/code/github/node-genome/src/genome");
-	// var genome_module = require(resolvePath("~/Dropbox/Documents/code/github/node-genome/src/genome"));
-	var genome = genome_module.init({ name : "Corinde Wiers"});
-
-	genome.set_random_seed(117); // uncomment to see repeated random sequence
-
-
-	var aphorism_sloppy = "sloppy";
-	var aphorism_strict = "strict";
-
-	// var desired_aphorism = aphorism_sloppy;
-	var desired_aphorism = aphorism_strict;
+// var desired_aphorism = aphorism_sloppy;
+var desired_aphorism = aphorism_strict;
 
 
 
@@ -279,7 +259,10 @@ var samples_per_cycle = 32;
 
 
 
-var output_dir = resolvePath("~/Dropbox/Documents/data/audio/");
+var output_dir = resolvePath(process.env.AUDIO_DIR || process.env.HOME);
+
+
+
 
 var output_format = ".wav";
 

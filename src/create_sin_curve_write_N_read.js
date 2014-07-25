@@ -124,7 +124,20 @@ var samples_per_cycle = 8;
 
 
 
-var output_dir = resolvePath("~/Dropbox/Documents/data/audio/");
+
+// var local_output_dir = process.env.AUDIO_DIR || process.env.HOME;
+
+// var output_dir = resolvePath(local_output_dir);
+
+
+
+
+
+var output_dir = resolvePath(process.env.AUDIO_DIR || process.env.HOME);
+
+
+
+
 
 var output_format = ".wav";
 
