@@ -82,8 +82,13 @@ var cb_read_file_done = function(audio_obj) {
     console.log("cb_read_file_done ");
     console.log("cb_read_file_done ");
 
+<<<<<<< HEAD
     // shared_utils.show_object(audio_obj, 
     //     "backHome iterate_mutate_judge 32 read_file_done", "total", 0);
+=======
+    shared_utils.show_object(audio_obj, 
+        "backHome iterate_mutate_judge 32 read_file_done", "total", 20);
+>>>>>>> 850383f190e395f56a58850ec009b92b4d316c54
 };
 
 // ------------------------------------- //
@@ -128,20 +133,21 @@ var cb_read_file_done = function(audio_obj) {
 
 // ---------- generates nice listenable sin tone ------------- //
 
-var SIZE_BUFFER_SOURCE = 16384;
+// var SIZE_BUFFER_SOURCE = 16384;
 
-var samples_per_cycle = 64;
+// var samples_per_cycle = 64;
 
 
-/*
+
 // ---------- testing ONLY not intended to listen to ------------- //
-SIZE_BUFFER_SOURCE = 4;
+// var SIZE_BUFFER_SOURCE = 4;
 // SIZE_BUFFER_SOURCE = 8;
+var SIZE_BUFFER_SOURCE = 64;
 // SIZE_BUFFER_SOURCE = 256;
 // var samples_per_cycle = 8;
 var samples_per_cycle = SIZE_BUFFER_SOURCE;
 // var samples_per_cycle = 64;
-*/
+
 
 
 
@@ -197,7 +203,22 @@ console.log("--------  pop_genome  ---------");
 
 var seed_genome = {
 
-	// flavor :  "direct",
+	
+	flavor :  "direct",
+
+	total_genes : 1,
+
+	total_gene_types : 1,
+
+	ave_gene_size : SIZE_BUFFER_SOURCE,
+
+	// total_timeslices : 44100,
+	total_timeslices : SIZE_BUFFER_SOURCE,
+	
+
+
+	
+	// flavor :  "pointed",
 
 	// total_genes : 1,
 
@@ -208,25 +229,15 @@ var seed_genome = {
 	// // total_timeslices : 44100,
 	// total_timeslices : SIZE_BUFFER_SOURCE,
 
+	// genes_start_time : {
+
+	// 	0 : "middle",
+	// }
+	
 
 
-	flavor :  "pointed",
+};		//		seed_genome
 
-	total_genes : 1,
-
-	total_gene_types : 1,
-
-	ave_gene_size : SIZE_BUFFER_SOURCE,
-
-	// total_timeslices : 44100,
-	total_timeslices : SIZE_BUFFER_SOURCE,
-
-	genes_start_time : {
-
-		0 : "middle",
-	}
-
-};
 
 
 	genome.pop_genome(seed_genome);
@@ -234,7 +245,7 @@ var seed_genome = {
 
 	console.log("--------  show_genetic_storehouse  ---------");
 
-	genome.show_genetic_storehouse();
+	genome.show_genetic_storehouse(9);
 
 
 	console.log("--------  parse_genome_synth_sound  ---------");
@@ -248,6 +259,8 @@ var seed_genome = {
 	// genome.show_genome_buffer();
 
 	// ---
+
+	console.log("--------  now write raw genome synthesized sound to output wav file  ---------");
 
 	var audio_genome_synth_raw_obj = {};
 
@@ -409,6 +422,9 @@ shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(audio_genome_synth_evo
 															genome_synth_evolved_filename);
 
 console.log("genome_synth_evolved_filename   ", genome_synth_evolved_filename);
+
+
+// return;
 
 
 // ------------ read wav file -------------------- //
