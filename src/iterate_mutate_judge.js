@@ -47,7 +47,6 @@ switch (environment_mode) {
 
 // ---
 
-
 audio_utils = audio_util_obj.audio_utils(environment_mode);
 
 console.log("audio_utils ", audio_utils);
@@ -73,20 +72,8 @@ var cb_read_file_done = function(audio_obj) {
     console.log("cb_read_file_done ");
     console.log("cb_read_file_done ");
 
-    // shared_utils.show_object(audio_obj, 
-    //     "backHome iterate_mutate_judge 32 read_file_done", "total", 0);
-};
-
-// ---
-
-var cb_write_file_done = function(audio_obj, cb_post_write) {
-
-    console.log("cb_write_file_done ");
-    console.log("cb_write_file_done ");
-    console.log("cb_write_file_done ");
-
     shared_utils.show_object(audio_obj, 
-        "backHome audio_obj 32 bit signed float    write_file_done ", "total", 10);
+        "backHome iterate_mutate_judge 32 read_file_done", "total", 20);
 };
 
 // ------------------------------------- //
@@ -131,20 +118,21 @@ var cb_write_file_done = function(audio_obj, cb_post_write) {
 
 // ---------- generates nice listenable sin tone ------------- //
 
-var SIZE_BUFFER_SOURCE = 16384;
+// var SIZE_BUFFER_SOURCE = 16384;
 
-var samples_per_cycle = 64;
+// var samples_per_cycle = 64;
 
 
-/*
+
 // ---------- testing ONLY not intended to listen to ------------- //
-SIZE_BUFFER_SOURCE = 4;
+// var SIZE_BUFFER_SOURCE = 4;
 // SIZE_BUFFER_SOURCE = 8;
+var SIZE_BUFFER_SOURCE = 64;
 // SIZE_BUFFER_SOURCE = 256;
 // var samples_per_cycle = 8;
 var samples_per_cycle = SIZE_BUFFER_SOURCE;
 // var samples_per_cycle = 64;
-*/
+
 
 
 
@@ -178,7 +166,11 @@ for (var index = 0; index < max_index; index++) {
 // var source_wave_filename = "/tmp/source_wave.wav";
 var source_wave = "source_wave";
 
-var source_wave_filename = path.join(output_dir, source_wave + output_format);
+// var source_wave_filename = path.join(output_dir, source_wave + output_format);
+var source_wave_filename = path.join(output_dir, source_wave + "_" +
+									SIZE_BUFFER_SOURCE + "_" +
+									samples_per_cycle + "_" +
+									output_format);
 
 
 console.log("source_wave_filename   ", source_wave_filename);
@@ -196,7 +188,22 @@ console.log("--------  pop_genome  ---------");
 
 var seed_genome = {
 
-	// flavor :  "direct",
+	
+	flavor :  "direct",
+
+	total_genes : 1,
+
+	total_gene_types : 1,
+
+	ave_gene_size : SIZE_BUFFER_SOURCE,
+
+	// total_timeslices : 44100,
+	total_timeslices : SIZE_BUFFER_SOURCE,
+	
+
+
+	
+	// flavor :  "pointed",
 
 	// total_genes : 1,
 
@@ -207,25 +214,15 @@ var seed_genome = {
 	// // total_timeslices : 44100,
 	// total_timeslices : SIZE_BUFFER_SOURCE,
 
+	// genes_start_time : {
+
+	// 	0 : "middle",
+	// }
+	
 
 
-	flavor :  "pointed",
+};		//		seed_genome
 
-	total_genes : 1,
-
-	total_gene_types : 1,
-
-	ave_gene_size : SIZE_BUFFER_SOURCE,
-
-	// total_timeslices : 44100,
-	total_timeslices : SIZE_BUFFER_SOURCE,
-
-	genes_start_time : {
-
-		0 : "middle",
-	}
-
-};
 
 
 	genome.pop_genome(seed_genome);
@@ -233,7 +230,7 @@ var seed_genome = {
 
 	console.log("--------  show_genetic_storehouse  ---------");
 
-	genome.show_genetic_storehouse();
+	genome.show_genetic_storehouse(9);
 
 
 	console.log("--------  parse_genome_synth_sound  ---------");
@@ -247,6 +244,8 @@ var seed_genome = {
 	// genome.show_genome_buffer();
 
 	// ---
+
+	console.log("--------  now write raw genome synthesized sound to output wav file  ---------");
 
 	var audio_genome_synth_raw_obj = {};
 
@@ -303,9 +302,11 @@ var seed_genome = {
 		console.log("doing it sloppy");
 
 		// max_acceptible_diff_per_point = 0.01;
-		max_acceptible_diff_per_point = 0.1;
+		// max_acceptible_diff_per_point = 0.1;
+		max_acceptible_diff_per_point = 0.3;
 
-		max_attempts_per_point = 30;
+		max_attempts_per_point = 10;
+		// max_attempts_per_point = 30;
 		// max_attempts_per_point = 300;
 
 	} else if (desired_aphorism === aphorism_strict) {
@@ -321,41 +322,36 @@ var seed_genome = {
 		process.exit(8);
 	}
 
-
-
-
+	// ---
 
 	var curr_gene_to_evolve = 0;
 
-	var size_buffer_this_gene = genome.get_size_buffer_this_gene(curr_gene_to_evolve);
-	// var size_buffer_this_gene = 2;
+	var curr_attempt;
+	var min_diff_witnessed_so_var;
 
-	// var curr_buffer_index_to_mutate = 1;
+	var putative_new_value_float;
+	var curr_best_new_value;
+	var curr_diff;
+
+	var size_buffer_this_gene = genome.get_size_buffer_this_gene(curr_gene_to_evolve);
 
 	for (var curr_buffer_index_to_mutate = 0; 
 			 curr_buffer_index_to_mutate < size_buffer_this_gene;
 			 curr_buffer_index_to_mutate++) {
 
-		// console.log(curr_buffer_index_to_mutate, " curr_buffer_index_to_mutate _____________");
-
 		var curr_value_buffer_prior = genome.get_value_node_buffer(curr_gene_to_evolve,
 																		 curr_buffer_index_to_mutate);
 
-		// console.log("PPRREEEE curr_value_buffer_prior   ", curr_value_buffer_prior);
-
 		var curr_value_buffer_source = source_obj.buffer[curr_buffer_index_to_mutate];
-
-		// console.log("curr_value_buffer_source   ", curr_value_buffer_source);
 
 		// ---
 
-		var curr_attempt = 0;
-		var min_diff_witnessed_so_var = 9999.99;
-		var putative_new_value_float = curr_value_buffer_prior;
-		var curr_best_new_value = curr_value_buffer_prior;
-		var curr_diff = Math.abs(putative_new_value_float - curr_value_buffer_source);
+		curr_attempt = 0;
+		min_diff_witnessed_so_var = 9999.99;
 
-		// console.log(curr_buffer_index_to_mutate, " PRE evolve curr_diff ", curr_diff);
+		putative_new_value_float = curr_value_buffer_prior;
+		curr_best_new_value = curr_value_buffer_prior;
+		curr_diff = Math.abs(putative_new_value_float - curr_value_buffer_source);
 
 		while (curr_diff > max_acceptible_diff_per_point &&
 			curr_attempt < max_attempts_per_point) {
@@ -370,19 +366,8 @@ var seed_genome = {
 				curr_best_new_value = putative_new_value_float;
 			};
 
-			// console.log(curr_attempt, min_diff_witnessed_so_var, 
-			// 			" putative_new_value_float   ", putative_new_value_float);
-
 			curr_attempt++;
 		};
-
-		// console.log(curr_buffer_index_to_mutate, " attempts ", curr_attempt,
-		// 			" min_diff ", 
-		// 			  min_diff_witnessed_so_var,
-		// 			  " best new ", curr_best_new_value);
-
-		// console.log(curr_buffer_index_to_mutate, "KLKLKLKLKLKL PRE get_value_node_buffer ",
-		// 				genome.get_value_node_buffer(curr_gene_to_evolve, curr_buffer_index_to_mutate))
 
 		genome.set_value_node_buffer(curr_gene_to_evolve, curr_buffer_index_to_mutate, curr_best_new_value);
 	};
@@ -409,7 +394,11 @@ var seed_genome = {
 // --- save into WAV file --- //
 
 var genome_synth_evolved = "genome_synth_evolved";
-var genome_synth_evolved_filename = path.join(output_dir, genome_synth_evolved + "_" + desired_aphorism + output_format);
+var genome_synth_evolved_filename = path.join(output_dir, genome_synth_evolved + "_" + 
+												desired_aphorism + "_" +
+												max_acceptible_diff_per_point + "_" +
+												max_attempts_per_point + "_" +
+												output_format);
 
 shared_utils.show_object(audio_genome_synth_evolved_obj, " POST after reading file ", "total", 10);
 
@@ -418,6 +407,9 @@ shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(audio_genome_synth_evo
 															genome_synth_evolved_filename);
 
 console.log("genome_synth_evolved_filename   ", genome_synth_evolved_filename);
+
+
+// return;
 
 
 // ------------ read wav file -------------------- //

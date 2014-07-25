@@ -5,7 +5,7 @@ var path = require('path');
 // var environment_mode = process.env.NODE_ENV || 'dev';
 var environment_mode = process.argv[2] || "dev";
 
-console.warn("running code in environment_mode: ", environment_mode);
+console.log("running code in environment_mode: ", environment_mode);
 
 
 var iterate_mutate_judge = require("./iterate_mutate_judge");
