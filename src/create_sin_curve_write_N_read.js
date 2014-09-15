@@ -14,49 +14,13 @@ function resolvePath(str) {
 
 // -------------------------------------------------------- //
 
-var evolveit = function(environment_mode) {
+var evolveit = function() {
 
 console.log("IN evolveit");
 
-var shared_utils;
-var genome_module;
-
-var audio_util_obj;
-var audio_utils;
-
-switch (environment_mode) {
-
-    case "nubia": // repository owner tinkering mode - ignore it and use nothing which defaults to dev which is OK
-
-        var local_github_parent = process.env.GITHUB_REPO_PARENT;
-
-        if ( ! local_github_parent ) {
-
-            console.error("ERROR - do not use environment_mode value of :", environment_mode, 
-                            " instead use dev or leave blank");
-            process.exit(8);
-        }
-
-        console.log("environment_mode is ", environment_mode, " so pulling in sibling dir source code");
-        shared_utils   = require(resolvePath(local_github_parent + "shared-utils/src/node_utils"));
-        genome_module  = require(resolvePath(local_github_parent + "node-genome/src/genome"));
-        audio_util_obj = require(resolvePath(local_github_parent + "audio-utils/src/audio_utils"));
-        break;
-
-    case "dev":
-        shared_utils  = require("shared-utils");
-        genome_module = require("node-genome");
-        audio_util_obj = require("audio-utils");    // get these modules from global install
-        break;
-
-    default :
-        shared_utils  = require("shared-utils");
-        genome_module = require("node-genome");
-        audio_util_obj = require("audio-utils");    // get these modules from global install
-        break;
-};
-
-audio_utils = audio_util_obj.audio_utils(environment_mode);
+var shared_utils = require("shared-utils");
+var genome_module = require("node-genome");
+var audio_utils = require("audio-utils");    
 
 console.log("audio_utils ", audio_utils);
 
@@ -145,7 +109,7 @@ console.log(" output_dir ", output_dir);
 
 
 
-
+/*
 
 
 var source_obj = {};
@@ -180,10 +144,68 @@ console.log("source_wave_filename   ", source_wave_filename);
 
 // return;
 
+*/
+
+
+// ----------- read 24 bit wav file -------------- //
+
+
+console.log("\n\nread wav file\n\n");
+
+
+// var source_wave_filename = "/home/stens/Dropbox/Documents/data/audio/genome_synth_evolved_sloppy.wav";
+// var source_wave_filename = "/home/stens/Dropbox/Documents/data/audio/audacity_chirp_24_bit_signed_mono_44100_bitrate.wav";
+var source_wave_filename = "/home/stens/Dropbox/Documents/data/audio/audacity_sin_curve_24_bit_signed_mono_44100_bitrate.wav";
+
+
+
+var wav_file_input_obj = {};  // create stub object to which we attach .buffer
+
+
+var property_buffer_raw_input_file = "buffer_raw_input_file";
+var property_buffer_input_file     = "buffer_input_file";
+
+wav_file_input_obj.filename = source_wave_filename;
+
+
+wav_file_input_obj[property_buffer_raw_input_file] = new Buffer(0);
+
+
+console.log("abouttttt to read wav_file_input_obj.filename ", wav_file_input_obj.filename);
+
+var spec = {};
+
+/*
+shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
+                                wav_file_input_obj,
+                                wav_file_input_obj.filename, 
+                                spec,
+                                cb_read_file_done);
+*/
+
+shared_utils.read_wav_file(wav_file_input_obj.filename, cb_read_file_done);
+
+
+/*
+shared_utils.read_wav_file(wav_file_input_obj.filename, (function(audio_obj) {
+
+    console.log("cb_read_file_done ");
+
+    console.log("populated buffer size ", audio_obj.buffer.length);
+
+    shared_utils.show_object(audio_obj,
+        "backHome audio_obj 32 bit signed float   read_file_done", "total", 10);
+}));
+*/
+
+
+
+
+
 
 // ------------ read wav file -------------------- //
 
-
+/*       stens TODO - IMPORTANT - below is GOOD one above is experimental
 
 console.log("\n\nread wav file\n\n");
 
@@ -208,6 +230,8 @@ shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
 								wav_file_input_obj.filename, 
                                 spec,
                                 cb_read_file_done);
+
+*/
 
 
 };

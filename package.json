@@ -1,13 +1,14 @@
 {
   "name": "cat-food-nation",
-  "version": "0.0.44",
+  "version": "0.1.0",
   "description": "cat-food-nation ===============",
   "main": "src/cat_food_nation.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "make"
+    "test": "node src/cat_food_nation.js nubia",
+    "start": "node src/cat_food_nation.js"
   },
   "repository": {
     "type": "git",
@@ -34,5 +35,10 @@
   "bugs": {
     "url": "https://github.com/scottstensland/cat-food-nation/issues"
   },
-  "homepage": "https://github.com/scottstensland/cat-food-nation"
+  "homepage": "https://github.com/scottstensland/cat-food-nation",
+      "dependencies": {
+        "audio-utils" : "^1.0.x",
+        "shared-utils" : "^0.1.3-5",
+        "node-genome" : "^0.2.31"
+    }
 }

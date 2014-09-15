@@ -1,5 +1,6 @@
 
-(function(exports) {
+// (function(exports) {
+var iterate_mutate_judge = function() {
 
 // ---------------------------------------------------------------- //
 
@@ -21,16 +22,19 @@ console.log("IN evolveit");
 var shared_utils;
 var genome_module;
 
-var audio_util_obj;
 var audio_utils;
 
 switch (environment_mode) {
 
-    case "nubia": // repository owner tinkering mode - ignore it and use nothing which defaults to dev which is OK
+    case "nubia":  { // repository owner tinkering mode - ignore it and use nothing which defaults
 
+    	// if you are repository owner you typically will also be editing sibling projects :
+    	//         shared-utils + node-genome + audio-utils
+    	// if so then define an environment variable pointing to parent dir of those repositories as in:
+    	// export GITHUB_REPO_PARENT="~/Documents/code/github/"
         var local_github_parent = process.env.GITHUB_REPO_PARENT;
 
-        if ( ! local_github_parent ) {
+        if (typeof local_github_parent === "undefined") {
 
             console.error("ERROR - do not use environment_mode value of :", environment_mode, 
                             " instead use dev or leave blank");
@@ -40,38 +44,20 @@ switch (environment_mode) {
         console.log("environment_mode is ", environment_mode, " so pulling in sibling dir source code");
         shared_utils   = require(resolvePath(local_github_parent + "shared-utils/src/node_utils"));
         genome_module  = require(resolvePath(local_github_parent + "node-genome/src/genome"));
-        audio_util_obj = require(resolvePath(local_github_parent + "audio-utils/src/audio_utils"));
+        audio_utils    = require(resolvePath(local_github_parent + "audio-utils/src/audio_utils"));
         break;
-
-    case "dev":
-        shared_utils  = require("shared-utils");
-        genome_module = require("node-genome");
-        audio_util_obj = require("audio-utils");    // get these modules from global install
-		break;
+    };
 
     default :
         shared_utils  = require("shared-utils");
         genome_module = require("node-genome");
-        audio_util_obj = require("audio-utils");    // get these modules from global install
+        audio_utils = require("audio-utils");    // get these modules from global install
         break;
 };
 
-// ---
-
-audio_utils = audio_util_obj.audio_utils(environment_mode);
-console.log("audio_utils ", audio_utils);
-
-var fs = require('fs');
-
-
 // ------------------------------------- //
 
-function do_typed_array_calc(given_obj) {
-
-	console.log("%O", given_obj);
-
-	given_obj.buffer = new Float32Array(given_obj.desired_size); // integer division by 2
-};
+console.log("audio_utils ", audio_utils);
 
 // ---
 
@@ -98,8 +84,8 @@ var cb_read_file_done = function(audio_obj) {
 	var aphorism_sloppy = "sloppy";
 	var aphorism_strict = "strict";
 
-	var desired_aphorism = aphorism_sloppy;
-	// var desired_aphorism = aphorism_strict;
+	// var desired_aphorism = aphorism_sloppy;
+	var desired_aphorism = aphorism_strict;
 
 
 // ------------  synthesize an audio buffer  ------------  //
@@ -124,18 +110,15 @@ var cb_read_file_done = function(audio_obj) {
 
 // var samples_per_cycle = 64;
 
+var cb_onto_genome = function(audio_obj) {
 
+    console.log("cb_onto_genome ");
 
-// ---------- testing ONLY not intended to listen to ------------- //
-// var SIZE_BUFFER_SOURCE = 4;
-// SIZE_BUFFER_SOURCE = 8;
-var SIZE_BUFFER_SOURCE = 64;
-// SIZE_BUFFER_SOURCE = 256;
-// var samples_per_cycle = 8;
-var samples_per_cycle = SIZE_BUFFER_SOURCE;
-// var samples_per_cycle = 64;
+    // shared_utils.show_object(audio_obj, 
+    //     "cb_onto_genome", "total", 20);
 
-
+    local_genome(audio_obj);
+};
 
 var output_dir = resolvePath(process.env.AUDIO_DIR || process.env.HOME);
 
@@ -146,23 +129,30 @@ console.log(" output_dir ", output_dir);
 
 
 
-var source_obj = {};
+var source_wav_obj = {};
 
-var source_obj = audio_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
+// var source_obj = audio_utils.pop_audio_buffer(SIZE_BUFFER_SOURCE, samples_per_cycle);
 
-var max_index = 3;
+// var input_source_filename = "../data/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+var input_source_filename = "data/Elephant_sounds_rgUFu_hVhlk_roar_mono_tiny.wav";
+
+console.log(" input_source_filename ", input_source_filename);
+
+shared_utils.read_wav_file(input_source_filename, cb_onto_genome);
+
+// // var max_index = 3;
 // var max_index = SIZE_BUFFER_SOURCE;
 
-for (var index = 0; index < max_index; index++) {
+// for (var index = 0; index < max_index; index++) {
 
-    console.log(index, " pop_audio_buffer ", source_obj.buffer[index]);
-}
+//     console.log(index, " pop_audio_buffer ", source_obj.buffer[index]);
+// }
 
 
 // shared_utils.show_object(output_obj.buffer, "total",
 //             "xxdxxdxdx output_obj xxdxxdxdx", output_obj.buffer.length);
 
-
+/*
 // --- save into WAV file --- //
 
 // var source_wave_filename = "/tmp/source_wave.wav";
@@ -180,13 +170,25 @@ console.log("source_wave_filename   ", source_wave_filename);
 shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(source_obj, source_wave_filename);
 
 console.log("source_wave_filename   ", source_wave_filename);
-
+*/
 // return;
 
-// ---------- now read back same wav file ------------ //
-
+var local_genome = function(source_obj) {
 
 console.log("--------  pop_genome  ---------");
+
+
+// var SIZE_BUFFER_SOURCE = 4;
+// SIZE_BUFFER_SOURCE = 8;
+// var SIZE_BUFFER_SOURCE = 64;
+var SIZE_BUFFER_SOURCE = source_obj.buffer.length;
+// SIZE_BUFFER_SOURCE = 256;
+// var samples_per_cycle = 8;
+var samples_per_cycle = SIZE_BUFFER_SOURCE;
+// var samples_per_cycle = 64;
+
+
+
 
 var seed_genome = {
 
@@ -225,21 +227,13 @@ var seed_genome = {
 
 };		//		seed_genome
 
-
-
 	genome.pop_genome(seed_genome);
-
 
 	console.log("--------  show_genetic_storehouse  ---------");
 
 	genome.show_genetic_storehouse(9);
 
-
 	console.log("--------  parse_genome_synth_sound  ---------");
-
-
-	// process.exit(9);
-
 
 	genome.parse_genome_synth_sound();
 
@@ -283,7 +277,6 @@ var seed_genome = {
 
 	// return;
 
-
 	var max_acceptible_diff_per_point;
 	var max_attempts_per_point;
 
@@ -294,10 +287,6 @@ var seed_genome = {
 	// var max_acceptible_diff_per_point = 0.01;
 	// var max_attempts_per_point = 300;
 	// var filename_aphorism = "_sloppy";
-
-
-
-
 
 	if (desired_aphorism === aphorism_sloppy) {
 
@@ -402,9 +391,8 @@ var genome_synth_evolved_filename = path.join(output_dir, genome_synth_evolved +
 												max_attempts_per_point + "_" +
 												output_format);
 
-shared_utils.show_object(audio_genome_synth_evolved_obj, " POST after reading file ", "total", 10);
+// shared_utils.show_object(audio_genome_synth_evolved_obj, "genome_synth_evolved ", "total", 10);
 
-// shared_utils.write_buffer_to_wav_file(audio_genome_synth_evolved_obj, genome_synth_evolved_filename);
 shared_utils.write_32_bit_float_buffer_to_16_bit_wav_file(audio_genome_synth_evolved_obj, 
 															genome_synth_evolved_filename);
 
@@ -413,7 +401,7 @@ console.log("genome_synth_evolved_filename   ", genome_synth_evolved_filename);
 
 // return;
 
-
+/*
 // ------------ read wav file -------------------- //
 
 console.log("\n\nread wav file\n\n");
@@ -436,16 +424,19 @@ console.log("abouttttt to read genome_synth_evolved_filename ", genome_synth_evo
 
 var spec = {};
 
-shared_utils.read_16_bit_wav_file_into_32_bit_float_buffer(
-								wav_file_input_obj,
-								genome_synth_evolved_filename, 
-                                spec,
-                                cb_read_file_done);
+shared_utils.read_wav_file(genome_synth_evolved_filename, cb_read_file_done);
+*/
 
+};		//		local_genome
 
-};
+};		//		evolveit
 exports.evolveit = evolveit;
 
 // ---
+// })(typeof exports === "undefined" ? this["iterate_mutate_judge"]={}: exports);
 
-})(typeof exports === "undefined" ? this["iterate_mutate_judge"]={}: exports);
+}(); //  iterate_mutate_judge = function()
+
+
+
+

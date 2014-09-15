@@ -9,11 +9,12 @@ console.log("running code in environment_mode: ", environment_mode);
 
 
 var iterate_mutate_judge = require("./iterate_mutate_judge");
-var synth_write_read = require("./synth_write_read");
-var test_write_wav = require("./test_write_wav");
-var test_16_bit_into_float_and_back_again = require("./test_16_bit_into_float_and_back_again");
-var create_sin_curve_write_N_read = require("./create_sin_curve_write_N_read");
-var beat_detection = require("./beat_detection");
+// var beat_detection = require("./beat_detection");
+// var evolve_sin_curve = require("./evolve_sin_curve");
+// var synth_write_read = require("./synth_write_read");
+// var test_write_wav = require("./test_write_wav");
+// var test_16_bit_into_float_and_back_again = require("./test_16_bit_into_float_and_back_again");
+// var create_sin_curve_write_N_read = require("./create_sin_curve_write_N_read");
 
 
 
@@ -77,75 +78,23 @@ var add_these = {
 	]
 };
 
-/*
-console.log("-----------------  add_these ", add_these);
-
-
-console.log("----------------- about to call add_node");
-
-genome.add_node(add_these);
-
- 
-
-
-console.log("----------------- TOP add_timeslices");
-
-genome.add_timeslices(add_these);
-
-console.log("----------------- END add_timeslices");
-
-
-
-console.log("-----------------");
-
-// genome.show();
-
-// genome.says();
-
-genome.show();
-*/
-
-
-/*
-// var buffer_byte_array = new Buffer(4); // NO fails to store negative numbers
-// var buffer_byte_array = new Int8Array(4); // NO fails to store negative numbers
-var buffer_byte_array = new Int16Array(4); // NO fails to store negative numbers
-
-buffer_byte_array[0] =  -34;
-buffer_byte_array[1] =    0;
-buffer_byte_array[2] =  300;
-buffer_byte_array[3] = -248;
-
-for (var index = 0; index < buffer_byte_array.length; index++) {
-
-	console.log(index, buffer_byte_array[index]);
-}
-
-return;
-*/
-
 
 
 // test_16_bit_into_float_and_back_again.float_to_int_and_back();
 
 // test_write_wav.evolveit(environment_mode);
 // synth_write_read.evolveit(environment_mode);
-// iterate_mutate_judge.evolveit(environment_mode);
+// evolve_sin_curve.evolveit(environment_mode);
 // create_sin_curve_write_N_read.evolveit(environment_mode); // does nice synth N write N read wav format file
-beat_detection.evolveit(environment_mode);
+// beat_detection.evolveit(environment_mode);
+iterate_mutate_judge.evolveit(environment_mode);
+
 
 
 // ------------------------------------------------------------- //
 // ------------------------------------------------------------- //
 // ------------------------------------------------------------- //
 // ------------------------------------------------------------- //
-
-
-
-// ---- must be one of : 256, 512, 1024, 2048, 4096, 8192, or 16384
-// SIZE_BUFFER_RENDER = 1024; // web audio node buffer size which does actual rendering
-
-
 
 
 console.log("<><><>  <><><>  <><><>   end of processing   <><><>  <><><>  <><><>");
